@@ -21,4 +21,10 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 - [x] Wall that can be destroyed by that enemy
 - [x] You can build a box wall, survive one wave, and lose resources if it falls
 
-Controls: left-click a Tree/FarmPlot to gather; press `B` to toggle wall-placement mode, move the mouse to position the ghost, left-click to place (costs 10 wood).
+**Phase 2 - Farming & Gathering Depth**: done.
+- [x] Farm plots with real plant/grow/harvest states (ready after a day/night cycle)
+- [x] A third resource type, stone, gathered from rocks
+- [x] Villagers with simple assignable AI (Farmer/Gatherer roles, autonomous search-walk-work loop)
+- [x] The day half of the loop is a small mini-game on its own: manage plots, gather materials, assign villagers
+
+Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer in the bottom-left panel to assign a role; press `B` to toggle wall-placement mode, move the mouse to position the ghost, left-click to place (costs 10 wood).
