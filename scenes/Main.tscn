@@ -1,6 +1,13 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=14 format=3]
 
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4"]
+[ext_resource type="PackedScene" path="res://scenes/tree.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/farm_plot.tscn" id="6"]
+[ext_resource type="Script" path="res://scripts/build_manager.gd" id="7"]
+[ext_resource type="PackedScene" path="res://scenes/wall.tscn" id="8"]
+[ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="9"]
+[ext_resource type="Script" path="res://scripts/wave_spawner.gd" id="10"]
 
 [sub_resource type="PlaneMesh" id="1"]
 size = Vector2(50, 50)
@@ -11,6 +18,13 @@ size = Vector3(50, 0.2, 50)
 [sub_resource type="Environment" id="3"]
 background_mode = 1
 background_color = Color(0.55, 0.75, 0.95, 1)
+
+[sub_resource type="BoxMesh" id="4"]
+size = Vector3(2, 1.5, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="5"]
+transparency = 1
+albedo_color = Color(0.2, 1.0, 0.3, 0.4)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1")
@@ -36,3 +50,42 @@ mesh = SubResource("1")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)
 shape = SubResource("2")
+
+[node name="HUD" parent="." instance=ExtResource("4")]
+
+[node name="Tree" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, -5)
+
+[node name="Tree2" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0, 5)
+
+[node name="FarmPlot" parent="." instance=ExtResource("6")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -3)
+
+[node name="Entities" type="Node3D" parent="."]
+
+[node name="BuildManager" type="Node3D" parent="."]
+script = ExtResource("7")
+wall_scene = ExtResource("8")
+wood_cost = 10
+grid_size = 2.0
+camera_path = NodePath("../Camera3D")
+entities_container_path = NodePath("../Entities")
+
+[node name="Ghost" type="MeshInstance3D" parent="BuildManager"]
+mesh = SubResource("4")
+surface_material_override/0 = SubResource("5")
+
+[node name="EnemySpawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -22)
+
+[node name="HomeBase" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 5)
+
+[node name="WaveSpawner" type="Node" parent="."]
+script = ExtResource("10")
+enemy_scene = ExtResource("9")
+spawn_point_path = NodePath("../EnemySpawn")
+home_base_path = NodePath("../HomeBase")
+entities_container_path = NodePath("../Entities")
+enemies_per_night = 1

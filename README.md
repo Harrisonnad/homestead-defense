@@ -12,7 +12,13 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 
 ## Status
 
-**Phase 0 - Scaffolding** (per the spec's Build Phases):
-- [x] Repo + base 3D scene, camera, ground plane
-- [x] Day/night cycle timer running end-to-end
-- [ ] Everything else (Phase 1+)
+**Phase 0 - Scaffolding** (per the spec's Build Phases): done.
+
+**Phase 1 - Core Loop Skeleton (gray-box)**: done.
+- [x] Place-a-building system (press `B` to toggle placement, click to place a wall)
+- [x] Resource counter (wood/food) that ticks up from clicking gray-box trees/farm plots
+- [x] One enemy type that spawns at night and walks toward the home base
+- [x] Wall that can be destroyed by that enemy
+- [x] You can build a box wall, survive one wave, and lose resources if it falls
+
+Controls: left-click a Tree/FarmPlot to gather; press `B` to toggle wall-placement mode, move the mouse to position the ghost, left-click to place (costs 10 wood).
