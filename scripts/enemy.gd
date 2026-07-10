@@ -2,28 +2,41 @@ extends CharacterBody3D
 class_name Enemy
 
 # Gray-box enemy: walks straight toward `target` each physics frame. If it
-# enters attack range of a Wall it stops and chips away at it on a timer;
-# once the wall falls (or it was never blocked) it continues to `target` and
-# triggers a resource raid on arrival.
+# enters attack range of anything that can take damage (a Wall or a guarding
+# Villager) it stops and chips away at it on a timer; once that target falls
+# (or it was never blocked) it continues to `target` and triggers a resource
+# raid on arrival. Has its own health so Guards can fight back.
 
 @export var move_speed: float = 2.5
 @export var attack_damage: int = 10
 @export var arrival_distance: float = 0.6
 @export var raid_resource_loss: Dictionary = {"wood": 5, "food": 5}
+@export var max_health: int = 30
 
 var target: Node3D = null
-var current_wall: Wall = null
+var current_target: Node3D = null
+var current_health: int
+
+signal died
 
 @onready var attack_range: Area3D = $AttackRange
 @onready var attack_timer: Timer = $AttackTimer
 
 func _ready() -> void:
+	current_health = max_health
+	add_to_group("enemies")
 	attack_range.body_entered.connect(_on_attack_range_body_entered)
 	attack_range.body_exited.connect(_on_attack_range_body_exited)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
 
+func take_damage(amount: int) -> void:
+	current_health -= amount
+	if current_health <= 0:
+		died.emit()
+		queue_free()
+
 func _physics_process(_delta: float) -> void:
-	if current_wall != null or target == null:
+	if current_target != null or target == null:
 		return
 
 	var to_target := target.global_position - global_position
@@ -36,23 +49,23 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _on_attack_range_body_entered(body: Node3D) -> void:
-	if current_wall != null or not body.is_in_group("walls"):
+	if current_target != null or not body.has_method("take_damage"):
 		return
-	current_wall = body as Wall
-	current_wall.died.connect(_on_wall_died, CONNECT_ONE_SHOT)
+	current_target = body
+	current_target.died.connect(_on_target_died, CONNECT_ONE_SHOT)
 	attack_timer.start()
 
 func _on_attack_range_body_exited(body: Node3D) -> void:
-	if body == current_wall:
-		current_wall = null
+	if body == current_target:
+		current_target = null
 		attack_timer.stop()
 
 func _on_attack_timer_timeout() -> void:
-	if current_wall != null:
-		current_wall.take_damage(attack_damage)
+	if current_target != null:
+		current_target.take_damage(attack_damage)
 
-func _on_wall_died() -> void:
-	current_wall = null
+func _on_target_died() -> void:
+	current_target = null
 	attack_timer.stop()
 
 func _reach_target() -> void:

@@ -3,32 +3,53 @@ class_name Villager
 
 # Gray-box villager: click to select (routes through the Selection autoload
 # to the role-assignment UI), then once assigned a Role, autonomously walks
-# to the nearest matching task, "works" for a fixed duration, performs the
-# same action a player click would, and goes idle to search again.
+# to the nearest matching task and performs it in a loop. Farmer/Gatherer
+# tasks are a single timed action (WorkTimer); Guard instead fights whatever
+# it walked up to on a repeating AttackTimer until it or the enemy dies.
 
-enum Role { NONE, FARMER, GATHERER }
+enum Role { NONE, FARMER, GATHERER, GUARD }
 enum State { IDLE, MOVING, WORKING }
+
+const GUARD_LAYER_BIT := 8
 
 @export var move_speed: float = 3.0
 @export var work_duration: float = 1.5
 @export var arrival_distance: float = 0.6
 @export var idle_retry_seconds: float = 1.0
+@export var guard_attack_damage: int = 12
+@export var max_health: int = 35
 
 var role: Role = Role.NONE
 var state: State = State.IDLE
 var target: Node3D = null
+var current_health: int
+
+signal died
 
 @onready var work_timer: Timer = $WorkTimer
 @onready var retry_timer: Timer = $RetryTimer
+@onready var attack_timer: Timer = $AttackTimer
 
 func _ready() -> void:
+	current_health = max_health
 	get_viewport().physics_object_picking = true
 	input_event.connect(_on_input_event)
 	work_timer.timeout.connect(_on_work_complete)
 	retry_timer.timeout.connect(_on_retry_timeout)
+	attack_timer.timeout.connect(_on_attack_timer_timeout)
+
+func take_damage(amount: int) -> void:
+	current_health -= amount
+	if current_health <= 0:
+		died.emit()
+		queue_free()
 
 func set_role(new_role: Role) -> void:
 	role = new_role
+	if new_role == Role.GUARD:
+		collision_layer |= GUARD_LAYER_BIT
+	else:
+		collision_layer &= ~GUARD_LAYER_BIT
 	if state == State.IDLE:
 		_try_find_task()
 
@@ -49,12 +70,19 @@ func _physics_process(_delta: float) -> void:
 	var to_target := target.global_position - global_position
 	to_target.y = 0.0
 	if to_target.length() <= arrival_distance:
-		state = State.WORKING
-		work_timer.start()
+		_start_working()
 		return
 
 	velocity = to_target.normalized() * move_speed
 	move_and_slide()
+
+func _start_working() -> void:
+	state = State.WORKING
+	if role == Role.GUARD:
+		target.died.connect(_on_guard_target_died, CONNECT_ONE_SHOT)
+		attack_timer.start()
+	else:
+		work_timer.start()
 
 func _on_work_complete() -> void:
 	if is_instance_valid(target):
@@ -71,6 +99,16 @@ func _on_work_complete() -> void:
 	state = State.IDLE
 	_try_find_task()
 
+func _on_attack_timer_timeout() -> void:
+	if role == Role.GUARD and is_instance_valid(target):
+		target.take_damage(guard_attack_damage)
+
+func _on_guard_target_died() -> void:
+	attack_timer.stop()
+	target = null
+	state = State.IDLE
+	_try_find_task()
+
 func _on_retry_timeout() -> void:
 	if state == State.IDLE:
 		_try_find_task()
@@ -83,6 +121,8 @@ func _try_find_task() -> void:
 		found = _find_nearest_farm_task()
 	elif role == Role.GATHERER:
 		found = _find_nearest_gatherable()
+	elif role == Role.GUARD:
+		found = _find_nearest_enemy()
 
 	if found:
 		target = found
@@ -115,3 +155,13 @@ func _find_nearest_farm_task() -> Node3D:
 			best_empty_dist = dist
 			best_empty = node
 	return best_ready if best_ready != null else best_empty
+
+func _find_nearest_enemy() -> Node3D:
+	var best: Node3D = null
+	var best_dist := INF
+	for node in get_tree().get_nodes_in_group("enemies"):
+		var dist := global_position.distance_to(node.global_position)
+		if dist < best_dist:
+			best_dist = dist
+			best = node
+	return best

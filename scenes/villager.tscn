@@ -19,6 +19,7 @@ collision_mask = 0
 motion_mode = 1
 input_ray_pickable = true
 script = ExtResource("1")
+max_health = 35
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
@@ -36,3 +37,7 @@ one_shot = true
 [node name="RetryTimer" type="Timer" parent="."]
 wait_time = 1.0
 one_shot = true
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 1.0
+one_shot = false

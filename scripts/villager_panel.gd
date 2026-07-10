@@ -7,6 +7,7 @@ extends CanvasLayer
 @onready var title_label: Label = $PanelContainer/VBoxContainer/TitleLabel
 @onready var farmer_button: Button = $PanelContainer/VBoxContainer/HBoxContainer/FarmerButton
 @onready var gatherer_button: Button = $PanelContainer/VBoxContainer/HBoxContainer/GathererButton
+@onready var guard_button: Button = $PanelContainer/VBoxContainer/HBoxContainer/GuardButton
 
 var current_villager: Villager = null
 
@@ -15,6 +16,7 @@ func _ready() -> void:
 	Selection.villager_selected.connect(_on_villager_selected)
 	farmer_button.pressed.connect(_on_farmer_pressed)
 	gatherer_button.pressed.connect(_on_gatherer_pressed)
+	guard_button.pressed.connect(_on_guard_pressed)
 
 func _on_villager_selected(villager: Villager) -> void:
 	current_villager = villager
@@ -26,6 +28,9 @@ func _on_farmer_pressed() -> void:
 
 func _on_gatherer_pressed() -> void:
 	_assign(Villager.Role.GATHERER)
+
+func _on_guard_pressed() -> void:
+	_assign(Villager.Role.GUARD)
 
 func _assign(role: Villager.Role) -> void:
 	if current_villager == null:
