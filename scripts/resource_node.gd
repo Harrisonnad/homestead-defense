@@ -8,7 +8,7 @@ extends StaticBody3D
 @export var gather_amount: int = 5
 @export var respawn_seconds: float = 3.0
 
-@onready var mesh: MeshInstance3D = $MeshInstance3D
+@onready var visual: Node3D = $Visual
 @onready var cooldown_timer: Timer = $CooldownTimer
 
 func _ready() -> void:
@@ -24,7 +24,7 @@ func gather() -> void:
 	if not is_available():
 		return
 	Economy.add_resource(resource_type, gather_amount)
-	mesh.visible = false
+	visual.visible = false
 	cooldown_timer.start(respawn_seconds)
 
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
@@ -32,4 +32,4 @@ func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3,
 		gather()
 
 func _on_cooldown_timeout() -> void:
-	mesh.visible = true
+	visual.visible = true

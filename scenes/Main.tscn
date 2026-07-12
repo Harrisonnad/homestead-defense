@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3]
+[gd_scene load_steps=22 format=3]
 
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4"]
@@ -23,6 +23,19 @@ size = Vector3(50, 0.2, 50)
 [sub_resource type="Environment" id="3"]
 background_mode = 1
 background_color = Color(0.55, 0.75, 0.95, 1)
+tonemap_mode = 3
+ssao_enabled = true
+ssao_intensity = 1.5
+fog_enabled = true
+fog_light_color = Color(0.7, 0.75, 0.78, 1)
+fog_density = 0.008
+glow_enabled = true
+glow_intensity = 0.5
+glow_bloom = 0.05
+
+[sub_resource type="StandardMaterial3D" id="8"]
+albedo_color = Color(0.28, 0.4, 0.22, 1)
+roughness = 0.95
 
 [sub_resource type="BoxMesh" id="4"]
 size = Vector3(2, 1.5, 0.5)
@@ -58,6 +71,7 @@ current = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 mesh = SubResource("1")
+surface_material_override/0 = SubResource("8")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ground"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.1, 0)

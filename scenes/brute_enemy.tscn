@@ -1,13 +1,7 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/enemy.gd" id="1"]
-
-[sub_resource type="CapsuleMesh" id="1"]
-radius = 0.55
-height = 2.0
-
-[sub_resource type="StandardMaterial3D" id="2"]
-albedo_color = Color(0.4, 0.1, 0.35, 1)
+[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Characters/gltf/Barbarian.glb" id="2"]
 
 [sub_resource type="CapsuleShape3D" id="3"]
 radius = 0.55
@@ -25,11 +19,10 @@ move_speed = 1.2
 attack_damage = 18
 max_health = 70
 raid_resource_loss = {"wood": 10, "food": 10}
+tint_color = Color(0.4, 0.1, 0.35, 1)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)
-mesh = SubResource("1")
-surface_material_override/0 = SubResource("2")
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(0.85, 0, 0, 0, 0.85, 0, 0, 0, 0.85, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0, 0)

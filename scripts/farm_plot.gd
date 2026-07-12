@@ -10,13 +10,13 @@ enum State { EMPTY, GROWING, READY }
 @export var food_yield: int = 15
 @export var days_to_grow: int = 1
 
-const CROP_COLOR_GROWING := Color(0.35, 0.55, 0.2)
-const CROP_COLOR_READY := Color(0.85, 0.7, 0.15)
+const TEXTURE_GROWING := preload("res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/cornYoung_S.png")
+const TEXTURE_READY := preload("res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/corn_S.png")
 
 var state: State = State.EMPTY
 var _days_growing: int = 0
 
-@onready var crop_mesh: MeshInstance3D = $Crop
+@onready var crop_sprite: Sprite3D = $Crop
 
 func _ready() -> void:
 	add_to_group("farm_plots")
@@ -54,11 +54,11 @@ func _on_day_started(_day_count: int) -> void:
 		_update_visual()
 
 func _update_visual() -> void:
-	crop_mesh.visible = state != State.EMPTY
+	crop_sprite.visible = state != State.EMPTY
 	if state == State.GROWING:
-		crop_mesh.get_surface_override_material(0).albedo_color = CROP_COLOR_GROWING
+		crop_sprite.texture = TEXTURE_GROWING
 	elif state == State.READY:
-		crop_mesh.get_surface_override_material(0).albedo_color = CROP_COLOR_READY
+		crop_sprite.texture = TEXTURE_READY
 
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if not (event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT):

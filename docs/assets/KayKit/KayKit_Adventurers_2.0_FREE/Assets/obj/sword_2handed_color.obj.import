@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://b4hwq5oc35lvo"
+path="res://.godot/imported/sword_2handed_color.obj-ebb6770e8d3f81c54f0ee04811a639fe.mesh"
+
+[deps]
+
+files=["res://.godot/imported/sword_2handed_color.obj-ebb6770e8d3f81c54f0ee04811a639fe.mesh"]
+
+source_file="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Assets/obj/sword_2handed_color.obj"
+dest_files=["res://.godot/imported/sword_2handed_color.obj-ebb6770e8d3f81c54f0ee04811a639fe.mesh", "res://.godot/imported/sword_2handed_color.obj-ebb6770e8d3f81c54f0ee04811a639fe.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

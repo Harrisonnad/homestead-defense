@@ -12,6 +12,7 @@ class_name Enemy
 @export var arrival_distance: float = 0.6
 @export var raid_resource_loss: Dictionary = {"wood": 5, "food": 5}
 @export var max_health: int = 30
+@export var tint_color: Color = Color(0.55, 0.15, 0.15)
 
 var target: Node3D = null
 var current_target: Node3D = null
@@ -21,6 +22,7 @@ signal died
 
 @onready var attack_range: Area3D = $AttackRange
 @onready var attack_timer: Timer = $AttackTimer
+@onready var model: Node3D = $Model
 
 func _ready() -> void:
 	current_health = max_health
@@ -28,6 +30,8 @@ func _ready() -> void:
 	attack_range.body_entered.connect(_on_attack_range_body_entered)
 	attack_range.body_exited.connect(_on_attack_range_body_exited)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
+	CharacterVisualUtils.apply_idle_pose(model)
+	CharacterVisualUtils.tint_meshes(model, tint_color)
 
 func take_damage(amount: int) -> void:
 	current_health -= amount

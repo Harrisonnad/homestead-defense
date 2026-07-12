@@ -34,4 +34,13 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 - [x] Wave escalation: more Raiders over time, Brutes join from day 4 onward
 - [x] The night half now has real decisions: intercept early (risk your guard) vs. let a wall/trap take the hit, and who to spare from farming to fight
 
+**Phase 4 - Art Pass**: done (for the assets available so far).
+- [x] Villagers and Enemies use real rigged KayKit character models (Mage/Ranger/Rogue/Knight per villager role, Rogue_Hooded/Barbarian for Raider/Brute) instead of solid-color capsules, each posed with a static idle animation frame
+- [x] Walls and FarmPlots use real Kenney isometric sprite art (billboarded, always facing the camera) instead of solid-color boxes
+- [x] Trees and Rocks are still gray-box (no matching assets in the sourced packs) but recomposed into more recognizable multi-part shapes instead of a single solid box; the Trap keeps its primitive shape but gained an emissive warning glow
+- [x] Lighting/mood pass: ambient occlusion, subtle fog, glow/bloom, filmic tonemapping, and the Ground finally has an actual material instead of Godot's default gray
+- [ ] No walk-cycle/attack/death animation yet — deliberately descoped, see `docs/CREDITS.md` context and the code comments in `scripts/character_visual_utils.gd`
+
+See [docs/CREDITS.md](docs/CREDITS.md) for third-party asset attribution.
+
 Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer/Guard in the bottom-left panel to assign a role; press `1` to toggle wall-placement mode or `2` for trap-placement mode, move the mouse to position the ghost, left-click to place (wall costs 10 wood, trap costs 8 stone).

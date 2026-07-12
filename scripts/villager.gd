@@ -29,6 +29,10 @@ signal died
 @onready var work_timer: Timer = $WorkTimer
 @onready var retry_timer: Timer = $RetryTimer
 @onready var attack_timer: Timer = $AttackTimer
+@onready var model_none: Node3D = $ModelNone
+@onready var model_farmer: Node3D = $ModelFarmer
+@onready var model_gatherer: Node3D = $ModelGatherer
+@onready var model_guard: Node3D = $ModelGuard
 
 func _ready() -> void:
 	current_health = max_health
@@ -37,6 +41,9 @@ func _ready() -> void:
 	work_timer.timeout.connect(_on_work_complete)
 	retry_timer.timeout.connect(_on_retry_timeout)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
+	for model in [model_none, model_farmer, model_gatherer, model_guard]:
+		CharacterVisualUtils.apply_idle_pose(model)
+	_update_model_visibility()
 
 func take_damage(amount: int) -> void:
 	current_health -= amount
@@ -50,8 +57,15 @@ func set_role(new_role: Role) -> void:
 		collision_layer |= GUARD_LAYER_BIT
 	else:
 		collision_layer &= ~GUARD_LAYER_BIT
+	_update_model_visibility()
 	if state == State.IDLE:
 		_try_find_task()
+
+func _update_model_visibility() -> void:
+	model_none.visible = role == Role.NONE
+	model_farmer.visible = role == Role.FARMER
+	model_gatherer.visible = role == Role.GATHERER
+	model_guard.visible = role == Role.GUARD
 
 func _on_input_event(_camera: Node, event: InputEvent, _event_position: Vector3, _normal: Vector3, _shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://fsrsrwx2dmmp"
+path="res://.godot/imported/smokebomb.obj-3b4b9a619d67b34e37bf1d791f3b176f.mesh"
+
+[deps]
+
+files=["res://.godot/imported/smokebomb.obj-3b4b9a619d67b34e37bf1d791f3b176f.mesh"]
+
+source_file="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Assets/obj/smokebomb.obj"
+dest_files=["res://.godot/imported/smokebomb.obj-3b4b9a619d67b34e37bf1d791f3b176f.mesh", "res://.godot/imported/smokebomb.obj-3b4b9a619d67b34e37bf1d791f3b176f.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false
