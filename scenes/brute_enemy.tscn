@@ -19,6 +19,7 @@ move_speed = 1.2
 attack_damage = 18
 max_health = 70
 raid_resource_loss = {"wood": 10, "food": 10}
+raid_homestead_damage = 30
 tint_color = Color(0.4, 0.1, 0.35, 1)
 
 [node name="Model" parent="." instance=ExtResource("2")]

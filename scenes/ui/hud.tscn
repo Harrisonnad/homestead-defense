@@ -23,10 +23,18 @@ text = "Food: 0"
 layout_mode = 2
 text = "Stone: 0"
 
+[node name="HomeLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Home: 100"
+
 [node name="DayLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "Day 1"
+text = "Day 1 / 20"
 
 [node name="PhaseLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
 text = "Day"
+
+[node name="HintLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "[1] Wall  [2] Trap  [T] Upgrades"

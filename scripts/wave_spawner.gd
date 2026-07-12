@@ -11,9 +11,10 @@ extends Node
 @export var home_base_path: NodePath
 @export var entities_container_path: NodePath
 @export var base_raiders: int = 1
-@export var raiders_per_days: int = 2
-@export var brute_unlock_day: int = 4
-@export var brutes_per_days: int = 4
+@export var raiders_per_days: int = 3
+@export var brute_unlock_day: int = 6
+@export var brutes_per_days: int = 5
+@export var max_enemies_per_night: int = 12
 @export var spawn_jitter: float = 2.0
 
 @onready var spawn_point: Marker3D = get_node(spawn_point_path)
@@ -31,7 +32,9 @@ func _compute_wave(day_count: int) -> Dictionary:
 	var brutes := 0
 	if day_count >= brute_unlock_day:
 		brutes = 1 + (day_count - brute_unlock_day) / brutes_per_days
-	return {"raiders": raiders, "brutes": brutes}
+	# Brutes are the bigger threat, so the cap trims raiders first.
+	raiders = mini(raiders, max_enemies_per_night - brutes)
+	return {"raiders": maxi(raiders, 0), "brutes": mini(brutes, max_enemies_per_night)}
 
 func _on_night_started() -> void:
 	var wave := _compute_wave(GameClock.day_count)

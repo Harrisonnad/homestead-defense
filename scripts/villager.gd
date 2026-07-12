@@ -18,11 +18,15 @@ const GUARD_LAYER_BIT := 8
 @export var idle_retry_seconds: float = 1.0
 @export var guard_attack_damage: int = 12
 @export var max_health: int = 35
+@export var veteran_bonus_health: int = 15
+@export var veteran_bonus_damage: int = 6
+@export var veteran_work_speed_multiplier: float = 0.7
 
 var role: Role = Role.NONE
 var state: State = State.IDLE
 var target: Node3D = null
 var current_health: int
+var _veteran_applied: bool = false
 
 signal died
 
@@ -36,14 +40,32 @@ signal died
 
 func _ready() -> void:
 	current_health = max_health
+	work_timer.wait_time = work_duration
+	retry_timer.wait_time = idle_retry_seconds
 	get_viewport().physics_object_picking = true
 	input_event.connect(_on_input_event)
 	work_timer.timeout.connect(_on_work_complete)
 	retry_timer.timeout.connect(_on_retry_timeout)
 	attack_timer.timeout.connect(_on_attack_timer_timeout)
+	Progression.upgrade_purchased.connect(_on_upgrade_purchased)
+	if Progression.is_purchased("veteran_training"):
+		_apply_veteran()
 	for model in [model_none, model_farmer, model_gatherer, model_guard]:
 		CharacterVisualUtils.apply_idle_pose(model)
 	_update_model_visibility()
+
+func _on_upgrade_purchased(id: String) -> void:
+	if id == "veteran_training":
+		_apply_veteran()
+
+func _apply_veteran() -> void:
+	if _veteran_applied:
+		return
+	_veteran_applied = true
+	max_health += veteran_bonus_health
+	current_health += veteran_bonus_health
+	guard_attack_damage += veteran_bonus_damage
+	work_timer.wait_time *= veteran_work_speed_multiplier
 
 func take_damage(amount: int) -> void:
 	current_health -= amount

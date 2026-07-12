@@ -23,7 +23,7 @@ func is_available() -> bool:
 func gather() -> void:
 	if not is_available():
 		return
-	Economy.add_resource(resource_type, gather_amount)
+	Economy.add_resource(resource_type, gather_amount * Progression.gather_multiplier())
 	visual.visible = false
 	cooldown_timer.start(respawn_seconds)
 

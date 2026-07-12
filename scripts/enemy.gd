@@ -11,6 +11,7 @@ class_name Enemy
 @export var attack_damage: int = 10
 @export var arrival_distance: float = 0.6
 @export var raid_resource_loss: Dictionary = {"wood": 5, "food": 5}
+@export var raid_homestead_damage: int = 15
 @export var max_health: int = 30
 @export var tint_color: Color = Color(0.55, 0.15, 0.15)
 
@@ -75,4 +76,7 @@ func _on_target_died() -> void:
 func _reach_target() -> void:
 	for type in raid_resource_loss:
 		Economy.remove_resource(type, raid_resource_loss[type])
+	var homestead := get_tree().get_first_node_in_group("homestead")
+	if homestead:
+		homestead.take_damage(raid_homestead_damage)
 	queue_free()

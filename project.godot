@@ -23,3 +23,5 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 GameClock="*res://scripts/autoload/game_clock.gd"
 Economy="*res://scripts/autoload/economy.gd"
 Selection="*res://scripts/autoload/selection.gd"
+Progression="*res://scripts/autoload/progression.gd"
+GameState="*res://scripts/autoload/game_state.gd"

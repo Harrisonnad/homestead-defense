@@ -25,6 +25,10 @@ func _process(delta: float) -> void:
 	elif was_day and not now_day:
 		night_started.emit()
 
+func reset() -> void:
+	time_of_day = 0.3
+	day_count = 1
+
 func day_factor() -> float:
 	return (1.0 - cos(time_of_day * TAU)) / 2.0
 

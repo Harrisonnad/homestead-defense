@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/wall.gd" id="1"]
 [ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/woodWall_S.png" id="2"]
+[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/woodWallCross_S.png" id="3"]
 
 [sub_resource type="BoxShape3D" id="3"]
 size = Vector3(2, 1.5, 0.5)
@@ -11,6 +12,8 @@ collision_layer = 2
 collision_mask = 0
 script = ExtResource("1")
 max_health = 50
+reinforced_max_health = 120
+reinforced_texture = ExtResource("3")
 
 [node name="Sprite3D" type="Sprite3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)

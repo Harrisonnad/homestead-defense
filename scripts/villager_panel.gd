@@ -39,4 +39,8 @@ func _assign(role: Villager.Role) -> void:
 	_refresh_title()
 
 func _refresh_title() -> void:
-	title_label.text = "Villager: %s" % Villager.Role.keys()[current_villager.role]
+	title_label.text = "Villager: %s (%d/%d HP)" % [
+		Villager.Role.keys()[current_villager.role],
+		current_villager.current_health,
+		current_villager.max_health,
+	]

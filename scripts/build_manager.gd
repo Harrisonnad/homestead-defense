@@ -8,10 +8,10 @@ extends Node3D
 enum BuildType { NONE, WALL, TRAP }
 
 @export var wall_scene: PackedScene
-@export var wood_cost: int = 10
+@export var wall_wood_cost: int = 10
+@export var reinforced_stone_surcharge: int = 6
 @export var trap_scene: PackedScene
-@export var trap_cost_type: String = "stone"
-@export var trap_cost_amount: int = 8
+@export var trap_stone_cost: int = 8
 @export var grid_size: float = 2.0
 @export var camera_path: NodePath
 @export var entities_container_path: NodePath
@@ -55,11 +55,17 @@ func _active_ghost() -> MeshInstance3D:
 		_:
 			return null
 
-func _cost_type() -> String:
-	return "wood" if build_type == BuildType.WALL else trap_cost_type
-
-func _cost_amount() -> int:
-	return wood_cost if build_type == BuildType.WALL else trap_cost_amount
+func _current_costs() -> Dictionary:
+	match build_type:
+		BuildType.WALL:
+			var costs := {"wood": wall_wood_cost}
+			if Progression.wall_tier() >= 2:
+				costs["stone"] = reinforced_stone_surcharge
+			return costs
+		BuildType.TRAP:
+			return {"stone": trap_stone_cost}
+		_:
+			return {}
 
 func _process(_delta: float) -> void:
 	if build_type == BuildType.NONE:
@@ -81,12 +87,12 @@ func _process(_delta: float) -> void:
 	ghost_valid_position = snapped
 	ghost.position = snapped
 
-	var affordable := Economy.can_afford(_cost_type(), _cost_amount())
+	var affordable := Economy.can_afford_all(_current_costs())
 	var mat := ghost.get_surface_override_material(0) as StandardMaterial3D
 	mat.albedo_color = GHOST_COLOR_OK if affordable else GHOST_COLOR_BLOCKED
 
 func _try_place() -> void:
-	if not Economy.spend_resource(_cost_type(), _cost_amount()):
+	if not Economy.spend_all(_current_costs()):
 		return
 	var scene := wall_scene if build_type == BuildType.WALL else trap_scene
 	var instance := scene.instantiate()

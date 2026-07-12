@@ -41,6 +41,13 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 - [x] Lighting/mood pass: ambient occlusion, subtle fog, glow/bloom, filmic tonemapping, and the Ground finally has an actual material instead of Godot's default gray
 - [ ] No walk-cycle/attack/death animation yet — deliberately descoped, see `docs/CREDITS.md` context and the code comments in `scripts/character_visual_utils.gd`
 
+**Phase 5 - Progression & Content**: done.
+- [x] A 20-day season with a real win/lose arc: survive 20 nights to win; the Homestead (100 HP) takes damage from every raid that lands, and the run ends if it falls
+- [x] Unlock board (press `T`): Sharpened Tools (gather x2), Reinforced Walls (120 HP, cross-braced), Veteran Training (+HP/+damage/faster work for all villagers), Heavy Traps (double damage), and repeatable Recruit Villager (population growth / death recovery)
+- [x] Tiers per the spec: tools (gather multiplier), buildings (wood wall -> reinforced wall), villagers (untrained -> veteran)
+- [x] Balance pass: gentler wave curve (brutes from day 6) with a per-night cap, tuned against a fully-upgraded homestead
+- [x] End screen with restart (fully resets clock/resources/upgrades)
+
 See [docs/CREDITS.md](docs/CREDITS.md) for third-party asset attribution.
 
-Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer/Guard in the bottom-left panel to assign a role; press `1` to toggle wall-placement mode or `2` for trap-placement mode, move the mouse to position the ghost, left-click to place (wall costs 10 wood, trap costs 8 stone).
+Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer/Guard in the bottom-left panel to assign a role; press `1` to toggle wall-placement mode or `2` for trap-placement mode, move the mouse to position the ghost, left-click to place (wall costs 10 wood, trap costs 8 stone); press `T` for the upgrade board. Survive 20 nights without losing the Homestead to win the season.
