@@ -48,6 +48,11 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 - [x] Balance pass: gentler wave curve (brutes from day 6) with a per-night cap, tuned against a fully-upgraded homestead
 - [x] End screen with restart (fully resets clock/resources/upgrades)
 
+**Map pass**: done.
+- [x] Fenced homestead compound with a destructible perimeter: weak fences (15 HP) enemies visibly smash through, and a stronger double-door gate (60 HP) facing the enemy approach — breaches accumulate over the season for you to patch with real walls
+- [x] West forest (7 trees), east rock outcrop (4 rocks), a proper 2x3 farm field, gatherable hay bales (food), and decorative props around the homestead
+- [x] Camera pan (WASD/arrows) and zoom (mouse wheel), clamped to the map
+
 See [docs/CREDITS.md](docs/CREDITS.md) for third-party asset attribution.
 
 Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer/Guard in the bottom-left panel to assign a role; press `1` to toggle wall-placement mode or `2` for trap-placement mode, move the mouse to position the ghost, left-click to place (wall costs 10 wood, trap costs 8 stone); press `T` for the upgrade board. Survive 20 nights without losing the Homestead to win the season.

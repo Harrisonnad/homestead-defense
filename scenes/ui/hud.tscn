@@ -37,4 +37,5 @@ text = "Day"
 
 [node name="HintLabel" type="Label" parent="VBoxContainer"]
 layout_mode = 2
-text = "[1] Wall  [2] Trap  [T] Upgrades"
+text = "[1] Wall  [2] Trap  [T] Upgrades
+WASD/Arrows Pan  Wheel Zoom"
