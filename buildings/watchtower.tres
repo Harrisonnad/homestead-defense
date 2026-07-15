@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/building_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/watchtower.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+building_name = "Watchtower"
+category = "defense"
+footprint_size = Vector2i(1, 1)
+resource_cost = {"wood": 15, "stone": 20}
+build_time_seconds = 6.0
+scene = ExtResource("2")
+max_health = 80
+defense_stats = {"damage": 8, "range": 7.0, "interval": 1.2}
+description = "Automatically fires on enemies in range. Bonus range on chokepoint tiles."

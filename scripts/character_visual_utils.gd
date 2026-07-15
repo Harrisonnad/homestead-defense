@@ -38,3 +38,20 @@ static func tint_meshes(node: Node, tint: Color) -> void:
 				node.set_surface_override_material(surface_idx, dup)
 	for child in node.get_children():
 		tint_meshes(child, tint)
+
+# Translucent build-placement preview tint. Unlike tint_meshes, this always
+# gets a material to work with (building a fresh one if the surface has
+# none) and forces alpha blending, and also handles Sprite3D-based visuals
+# (farm plots, animal pen) via modulate instead of a material override.
+static func apply_ghost_tint(node: Node, color: Color) -> void:
+	if node is MeshInstance3D:
+		for surface_idx in node.mesh.get_surface_count():
+			var mat: Material = node.get_active_material(surface_idx)
+			var dup: StandardMaterial3D = mat.duplicate() if mat is StandardMaterial3D else StandardMaterial3D.new()
+			dup.albedo_color = color
+			dup.transparency = BaseMaterial3D.TRANSPARENCY_ALPHA
+			node.set_surface_override_material(surface_idx, dup)
+	elif node is Sprite3D:
+		node.modulate = color
+	for child in node.get_children():
+		apply_ghost_tint(child, color)

@@ -40,6 +40,7 @@ signal died
 
 func _ready() -> void:
 	current_health = max_health
+	add_to_group("villagers")
 	work_timer.wait_time = work_duration
 	retry_timer.wait_time = idle_retry_seconds
 	get_viewport().physics_object_picking = true

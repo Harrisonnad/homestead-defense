@@ -6,3 +6,10 @@
 *.translation
 export.cfg
 export_presets.cfg
+
+# Asset packs ship the same models in gltf/fbx/obj; this project only ever
+# uses gltf/glb, and some KayKit obj sidecar filenames exceed Windows' path
+# length limit (compound parent-child names), which breaks `git add`.
+docs/assets/**/Assets/obj/
+docs/assets/**/Assets/fbx/
+docs/assets/**/Assets/fbx(unity)/

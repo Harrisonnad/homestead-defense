@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/building_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/storehouse.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+building_name = "Storehouse"
+category = "storage"
+footprint_size = Vector2i(2, 2)
+resource_cost = {"wood": 25, "stone": 25}
+build_time_seconds = 8.0
+scene = ExtResource("2")
+max_health = 90
+storage_cap_bonus = 75
+description = "Raises the storage cap for every resource by 75."

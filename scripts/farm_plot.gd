@@ -16,6 +16,13 @@ const TEXTURE_READY := preload("res://docs/assets/kennys/kenney_isometric-miniat
 var state: State = State.EMPTY
 var _days_growing: int = 0
 
+# Set by ConstructionSite when placed via the map's PlacementGrid; farm
+# plots have no HP/combat, so these are only used for read access, never
+# released (a plot never "dies").
+var footprint_origin: Vector2i
+var footprint_size: Vector2i = Vector2i(1, 1)
+var placement_grid: PlacementGrid
+
 @onready var crop_sprite: Sprite3D = $Crop
 
 func _ready() -> void:

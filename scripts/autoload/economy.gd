@@ -1,20 +1,24 @@
 extends Node
 
 # Autoload singleton: tracks player resource counts and notifies listeners
-# (HUD, build costs, raid losses) when they change.
+# (HUD, build costs, raid losses) when they change. Storage caps start flat
+# per resource and rise with built Storehouses (BuildingDef.storage_cap_bonus).
 
 const STARTING_RESOURCES := {
 	"wood": 0,
 	"food": 0,
 	"stone": 0,
 }
+const BASE_STORAGE_CAP := 100
 
 var resources: Dictionary = STARTING_RESOURCES.duplicate()
+var storage_caps: Dictionary = {"wood": BASE_STORAGE_CAP, "food": BASE_STORAGE_CAP, "stone": BASE_STORAGE_CAP}
 
 signal resources_changed(type: String, new_amount: int)
+signal caps_changed(type: String, new_cap: int)
 
 func add_resource(type: String, amount: int) -> void:
-	resources[type] = get_amount(type) + amount
+	resources[type] = mini(get_amount(type) + amount, get_cap(type))
 	resources_changed.emit(type, resources[type])
 
 func can_afford(type: String, amount: int) -> bool:
@@ -50,7 +54,17 @@ func spend_all(costs: Dictionary) -> bool:
 func get_amount(type: String) -> int:
 	return resources.get(type, 0)
 
+func get_cap(type: String) -> int:
+	return storage_caps.get(type, BASE_STORAGE_CAP)
+
+func add_storage_cap_all(bonus: int) -> void:
+	for type in storage_caps:
+		storage_caps[type] += bonus
+		caps_changed.emit(type, storage_caps[type])
+
 func reset() -> void:
 	resources = STARTING_RESOURCES.duplicate()
+	storage_caps = {"wood": BASE_STORAGE_CAP, "food": BASE_STORAGE_CAP, "stone": BASE_STORAGE_CAP}
 	for type in resources:
 		resources_changed.emit(type, resources[type])
+		caps_changed.emit(type, storage_caps[type])

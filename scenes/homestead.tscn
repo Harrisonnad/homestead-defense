@@ -1,15 +1,11 @@
 [gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" path="res://scripts/homestead.gd" id="1"]
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/woodWallDoorClosed_S.png" id="2"]
+[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/green/building_windmill_green.gltf" id="2"]
 
 [node name="Homestead" type="Node3D"]
 script = ExtResource("1")
 max_health = 100
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
-texture = ExtResource("2")
-pixel_size = 0.0078125
-shaded = true
-alpha_cut = 1
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 1.252105, 0)

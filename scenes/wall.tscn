@@ -1,11 +1,10 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/wall.gd" id="1"]
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/woodWall_S.png" id="2"]
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/woodWallCross_S.png" id="3"]
+[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/wall_straight.gltf" id="2"]
 
 [sub_resource type="BoxShape3D" id="3"]
-size = Vector3(2, 1.5, 0.5)
+size = Vector3(1.0, 0.55, 0.4)
 
 [node name="Wall" type="StaticBody3D"]
 collision_layer = 2
@@ -13,15 +12,11 @@ collision_mask = 0
 script = ExtResource("1")
 max_health = 50
 reinforced_max_health = 120
-reinforced_texture = ExtResource("3")
+reinforced_tint = Color(0.55, 0.55, 0.6, 1)
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
-texture = ExtResource("2")
-pixel_size = 0.0078125
-shaded = true
-alpha_cut = 1
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.275, 0)
 shape = SubResource("3")

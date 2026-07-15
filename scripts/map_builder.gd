@@ -34,6 +34,7 @@ const BIOME_COLORS := {
 }
 
 var map_data: Dictionary = {}
+var placement_grid: PlacementGrid
 
 var _rng := RandomNumberGenerator.new()
 var _half_size: Vector2
@@ -53,11 +54,20 @@ func _ready() -> void:
 	var size: Vector2i = map_data["size"]
 	_half_size = Vector2(size.x / 2.0, size.y / 2.0)
 
+	placement_grid = PlacementGrid.new()
+	placement_grid.setup(map_data, _half_size)
+
 	_build_terrain()
 	_place_landmarks()
 	_populate_interactables()
 	_dress_chokepoints()
 	_scatter_props()
+
+	# Everything spawned above claimed a spacing radius in _occupied; mirror
+	# those exact tiles into the PlacementGrid so BuildManager can't place a
+	# building on top of a tree, farm plot, fence, or the homestead.
+	for tile in _occupied:
+		placement_grid.occupied_tiles[tile] = true
 
 func tile_to_world(tile: Vector2i) -> Vector3:
 	return Vector3(tile.x - _half_size.x + 0.5, 0.0, tile.y - _half_size.y + 0.5)
@@ -163,7 +173,9 @@ func _dress_chokepoints() -> void:
 		for offset_x in [-2.0, 0.0, 2.0]:
 			var fence := fence_scene.instantiate()
 			add_child(fence)
-			fence.global_position = tile_to_world(tile) + Vector3(offset_x, 0, 0)
+			var pos := tile_to_world(tile) + Vector3(offset_x, 0, 0)
+			fence.global_position = pos
+			placement_grid.mark_occupied_world(pos)
 
 func _scatter_props() -> void:
 	var count := 0

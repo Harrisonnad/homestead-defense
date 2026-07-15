@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/building.gd" id="1"]
+[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_wood_straight.gltf" id="2"]
+[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_animal-pack-remastered/PNG/Round/cow.png" id="3"]
+
+[sub_resource type="BoxShape3D" id="4"]
+size = Vector3(2, 1.0, 2)
+
+[node name="AnimalPen" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1")
+max_health = 60
+passive_resource_output = {"food": 6}
+
+[node name="FenceNorth" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1.7320508, 0, 1.7320508, 0, 1.7320508, 0, 0, 0, 0, -1)
+
+[node name="FenceSouth" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1.7320508, 0, 1.7320508, 0, 1.7320508, 0, 0, 0, 0, 1)
+
+[node name="FenceWest" parent="." instance=ExtResource("2")]
+transform = Transform3D(1.7320508, 0, 0, 0, 1.7320508, 0, 0, 0, 1.7320508, -1, 0, 0)
+
+[node name="FenceEast" parent="." instance=ExtResource("2")]
+transform = Transform3D(1.7320508, 0, 0, 0, 1.7320508, 0, 0, 0, 1.7320508, 1, 0, 0)
+
+[node name="Cow" type="Sprite3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.618, 0)
+texture = ExtResource("3")
+pixel_size = 0.00966
+shaded = true
+alpha_cut = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("4")

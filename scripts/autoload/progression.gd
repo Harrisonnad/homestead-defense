@@ -34,7 +34,7 @@ const UPGRADES := {
 		"name": "Recruit Villager",
 		"costs": {"food": 30},
 		"repeatable": true,
-		"description": "A new settler joins the homestead",
+		"description": "A new settler joins the homestead (needs population room - build a House)",
 	},
 }
 
@@ -49,6 +49,8 @@ func can_purchase(id: String) -> bool:
 	if not UPGRADES.has(id):
 		return false
 	if is_purchased(id) and not UPGRADES[id]["repeatable"]:
+		return false
+	if id == "recruit_villager" and not GameState.has_population_room():
 		return false
 	return Economy.can_afford_all(UPGRADES[id]["costs"])
 
