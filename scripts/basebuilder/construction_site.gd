@@ -15,6 +15,7 @@ const SCAFFOLD_NATIVE_WIDTH := 1.9
 @export var final_scene: PackedScene
 @export var footprint_size: Vector2i = Vector2i(1, 1)
 @export var max_health: int = 20
+@export var source_def_path: String = "" # BuildingDef resource_path, for save/load
 
 var current_health: int
 var placement_grid: PlacementGrid
@@ -52,5 +53,8 @@ func _on_complete() -> void:
 	building.placement_grid = placement_grid
 	if "chokepoint" in building and placement_grid:
 		building.chokepoint = placement_grid.is_chokepoint(footprint_origin)
+	if source_def_path != "":
+		building.set_meta("building_def_path", source_def_path)
+	building.add_to_group("player_buildings")
 	completed.emit(building)
 	queue_free()

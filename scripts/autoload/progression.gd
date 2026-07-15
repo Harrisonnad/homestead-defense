@@ -41,6 +41,7 @@ const UPGRADES := {
 var purchased: Dictionary = {}
 
 signal upgrade_purchased(id: String)
+signal state_loaded
 
 func is_purchased(id: String) -> bool:
 	return purchased.has(id)
@@ -74,3 +75,9 @@ func trap_damage_multiplier() -> int:
 
 func reset() -> void:
 	purchased.clear()
+
+func load_state(purchased_ids: Array) -> void:
+	purchased.clear()
+	for id in purchased_ids:
+		purchased[id] = true
+	state_loaded.emit()

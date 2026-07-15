@@ -71,6 +71,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			rotation_steps = (rotation_steps + 1) % 4
 		elif event.keycode == KEY_ESCAPE:
 			cancel_placing()
+			get_viewport().set_input_as_handled()
 
 func _process(_delta: float) -> void:
 	if selected_def == null or ghost_instance == null:
@@ -114,10 +115,12 @@ func _actual_cost() -> Dictionary:
 	return costs
 
 func _try_place() -> void:
-	if not ghost_check.get("ok", false):
-		return
 	var costs := _actual_cost()
+	if not ghost_check.get("ok", false):
+		NotificationManager.notify("Can't build there: %s" % ghost_check.get("reason", "blocked"))
+		return
 	if not Economy.can_afford_all(costs):
+		NotificationManager.notify("Not enough resources for %s" % selected_def.building_name)
 		return
 
 	var grid: PlacementGrid = map_builder.placement_grid
@@ -136,3 +139,4 @@ func _try_place() -> void:
 	site.footprint_size = selected_def.footprint_size
 	site.footprint_origin = ghost_origin_tile
 	site.placement_grid = grid
+	site.source_def_path = selected_def.resource_path

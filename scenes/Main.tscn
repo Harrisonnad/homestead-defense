@@ -28,6 +28,8 @@
 [ext_resource type="Resource" path="res://buildings/house.tres" id="42"]
 [ext_resource type="Resource" path="res://buildings/storehouse.tres" id="43"]
 [ext_resource type="Resource" path="res://buildings/animal_pen.tres" id="44"]
+[ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="45"]
+[ext_resource type="PackedScene" path="res://scenes/ui/damage_vignette.tscn" id="46"]
 
 [sub_resource type="PlaneMesh" id="1"]
 size = Vector2(64, 64)
@@ -145,3 +147,7 @@ villager_paths = Array[NodePath]([NodePath("../Villager"), NodePath("../Villager
 [node name="BuildMenu" parent="." instance=ExtResource("37")]
 building_defs = Array[BuildingDef]([ExtResource("38"), ExtResource("39"), ExtResource("40"), ExtResource("41"), ExtResource("42"), ExtResource("43"), ExtResource("44")])
 build_manager_path = NodePath("../BuildManager")
+
+[node name="PauseMenu" parent="." instance=ExtResource("45")]
+
+[node name="DamageVignette" parent="." instance=ExtResource("46")]

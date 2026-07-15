@@ -11,6 +11,11 @@ const SKY_NIGHT := Color(0.04, 0.05, 0.12)
 const SUN_DAY := Color(1.0, 0.95, 0.8)
 const SUN_NIGHT := Color(0.15, 0.2, 0.4)
 
+func _ready() -> void:
+	if SaveManager.pending_load:
+		SaveManager.pending_load = false
+		SaveManager.load_game.call_deferred()
+
 func _process(_delta: float) -> void:
 	var factor := GameClock.day_factor()
 	sun.rotation.x = GameClock.time_of_day * TAU - PI / 2.0

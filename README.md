@@ -8,7 +8,7 @@ Low-poly homesteading city defense game. Design spec: [docs/game-master-spec.md]
 
 ## Running
 
-Open this folder as a project in the Godot editor (`Project > Import`, select this directory's `project.godot`), then press Play (F5). The main scene runs a day/night cycle: sky color, sun angle, and sun color shift over a 60-second cycle so a full day is visible in about a minute.
+Open this folder as a project in the Godot editor (`Project > Import`, select this directory's `project.godot`), then press Play (F5). Boots to a main menu (New Game / Continue / Settings / Quit) rather than straight into gameplay.
 
 ## Status
 
@@ -65,6 +65,15 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 - [x] Known v1 seam: the Animal Pen's livestock billboard uses Kenney's Animal Pack Remastered, which is icon/badge-style art (a round backing behind each animal) rather than the loose in-scene sprite style the rest of the game uses — it visually reads as a sticker. Flagged in the spec itself as an open question (a shared shader pass to unify KayKit and non-KayKit art), not fixed here
 - [x] Deferred per spec TBDs: night construction lockout (construction stays allowed at night), crop-destruction raid objectives, weapon-bits garrison props
 
+**Phase 6 — Polish & Ship Prep** (UI/UX + save/load; sound/music deliberately not done, see below): done.
+- [x] A single `themes/ui_theme.tres` Theme (set as the project's global theme) reskins every panel — HUD, villager panel, upgrade board, build menu, end screen — at once, in the game's earthy palette, with zero per-scene changes
+- [x] A main menu (New Game / Continue / Settings / Quit — Continue only enabled when a save exists) is now the game's actual entry point, and an in-game pause menu (`Escape`) adds Save/Load/Settings/Restart Season/Quit to Main Menu/Quit Game — `Escape` correctly defers to canceling an in-progress build placement first if one is active
+- [x] Save/Load (`user://savegame.json`, human-readable): preserves season progress (day, resources + storage caps, purchased upgrades, population cap), the Homestead's HP, every villager (position/role/HP), and every player-built structure (type/position/rotation/HP). The map itself isn't saved tile-by-tile — `MapGenerator` is deterministic, so saving the theme+seed reproduces identical terrain/tree/rock/farm-plot *positions* on load
+- [x] **Known v1 limitation**, stated plainly rather than hidden: loading does *not* preserve map-generated resource-node/farm-plot growth state (they come back fresh) or any enemies mid-raid (a wave in progress when you save gets a pass until the next natural dusk, since `night_started` fires on a live phase *transition* that a direct state-restore doesn't replay)
+- [x] A `Settings` autoload with a working master-volume slider/mute wired to the real `Master` audio bus, and a toast-notification system (upgrade purchases, "the Homestead is under attack", failed-placement reasons) plus a brief red screen-flash on Homestead damage — small feedback gaps that were silent before
+- [ ] **Sound/music: not done.** No audio assets exist in this repo and none were generated — the volume/mute plumbing above is real and ready, but there is currently nothing for it to play. Source audio assets to close this out
+- [ ] **Playtesting feedback loop**: needs an actual human playing it, which is exactly what this phase's menu/pause/save-resume shell now makes possible to do in more than one sitting
+
 See [docs/CREDITS.md](docs/CREDITS.md) for third-party asset attribution.
 
-Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer/Guard in the bottom-left panel to assign a role; press `B` for the build menu, `1`-`7` to select a building, move the mouse to position the ghost, `R` to rotate, left-click to place, right-click/`Escape` to cancel; press `T` for the upgrade board. Survive 20 nights without losing the Homestead to win the season.
+Controls: left-click a Tree/Rock to gather, or a FarmPlot to plant/harvest; click a Villager to select it, then click Farmer/Gatherer/Guard in the bottom-left panel to assign a role; press `B` for the build menu, `1`-`7` to select a building, move the mouse to position the ghost, `R` to rotate, left-click to place, right-click/`Escape` to cancel; press `T` for the upgrade board; press `Escape` to pause (Save/Load/Settings/Restart/Quit). Survive 20 nights without losing the Homestead to win the season.

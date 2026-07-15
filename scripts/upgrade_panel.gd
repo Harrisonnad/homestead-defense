@@ -14,6 +14,7 @@ func _ready() -> void:
 	panel.visible = false
 	Economy.resources_changed.connect(_on_resources_changed)
 	Progression.upgrade_purchased.connect(_on_upgrade_purchased)
+	Progression.state_loaded.connect(_refresh_buttons)
 	_build_buttons()
 	_refresh_buttons()
 
