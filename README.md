@@ -49,9 +49,13 @@ Open this folder as a project in the Godot editor (`Project > Import`, select th
 - [x] End screen with restart (fully resets clock/resources/upgrades)
 
 **Map pass**: done.
-- [x] Fenced homestead compound with a destructible perimeter: weak fences (15 HP) enemies visibly smash through, and a stronger double-door gate (60 HP) facing the enemy approach — breaches accumulate over the season for you to patch with real walls
-- [x] West forest (7 trees), east rock outcrop (4 rocks), a proper 2x3 farm field, gatherable hay bales (food), and decorative props around the homestead
+- [x] Destructible fences/gates, gatherable hay bales, decorative props
 - [x] Camera pan (WASD/arrows) and zoom (mouse wheel), clamped to the map
+
+**Procedural maps v1 — River Valley** (spec: [docs/spec_procedural_maps.md](docs/spec_procedural_maps.md)): done.
+- [x] Every session generates a fresh 64x64 map from the data-driven `themes/river_valley.tres` theme: noise elevation/moisture, biome thresholds that keep rivers and rocky ridges contiguous, seeded + deterministic (session seed printed to console), validated for playability (contiguous buildable core, water present, chokepoints) with retry + pre-verified fallback seed
+- [x] The map builder realizes the data in-scene: biome terrain tiles, ~50 trees / 20 rocks / 10 hay / 18 farm plots with spacing rules, old fence lines dressing the chokepoints, prop scatter, and the homestead/villagers/enemy-spawn placed onto the generated buildable core
+- [x] Known v1 limits: water is a shallow, wadeable river (real movement blocking arrives with navmesh pathfinding later); animal zones are generated but unused until livestock exists
 
 See [docs/CREDITS.md](docs/CREDITS.md) for third-party asset attribution.
 

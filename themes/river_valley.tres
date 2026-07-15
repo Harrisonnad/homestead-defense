@@ -1,0 +1,28 @@
+[gd_resource type="Resource" script_class="MapTheme" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/mapgen/map_theme.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/props/sack_prop.tscn" id="2"]
+[ext_resource type="PackedScene" path="res://scenes/props/hay_stack_prop.tscn" id="3"]
+
+[resource]
+script = ExtResource("1")
+theme_name = "River Valley"
+noise_frequency = 0.018
+noise_octaves = 4
+elevation_amplitude = Vector2(0.0, 8.0)
+moisture_frequency = 0.02
+biome_weights = {
+"grass": 1.2,
+"dirt": 0.5,
+"water": 0.6,
+"rock": 0.15
+}
+resource_node_density = Vector2(0.025, 0.045)
+crop_plot_density = Vector2(0.06, 0.11)
+min_buildable_core_tiles = 180
+chokepoint_bias = 0.4
+min_chokepoints = 2
+prop_scenes = Array[PackedScene]([ExtResource("2"), ExtResource("3")])
+prop_density = 0.035
+max_regen_attempts = 6
+fallback_seed = 1
