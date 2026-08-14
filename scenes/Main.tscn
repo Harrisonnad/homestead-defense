@@ -1,8 +1,11 @@
-[gd_scene load_steps=34 format=3]
+[gd_scene load_steps=61 format=3]
 
 [ext_resource type="Script" path="res://scripts/day_night_cycle.gd" id="1"]
+[ext_resource type="Shader" path="res://assets/terrain/terrain_day_night.gdshader" id="55"]
 [ext_resource type="PackedScene" path="res://scenes/ui/hud.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/tree.tscn" id="5"]
+[ext_resource type="PackedScene" path="res://scenes/tree_pine.tscn" id="70"]
+[ext_resource type="PackedScene" path="res://scenes/tree_tall.tscn" id="71"]
 [ext_resource type="PackedScene" path="res://scenes/farm_plot.tscn" id="6"]
 [ext_resource type="Script" path="res://scripts/build_manager.gd" id="7"]
 [ext_resource type="PackedScene" path="res://scenes/enemy.tscn" id="9"]
@@ -10,6 +13,7 @@
 [ext_resource type="PackedScene" path="res://scenes/rock.tscn" id="11"]
 [ext_resource type="PackedScene" path="res://scenes/villager.tscn" id="12"]
 [ext_resource type="PackedScene" path="res://scenes/ui/villager_panel.tscn" id="13"]
+[ext_resource type="PackedScene" path="res://scenes/ui/crop_select_panel.tscn" id="73"]
 [ext_resource type="PackedScene" path="res://scenes/brute_enemy.tscn" id="14"]
 [ext_resource type="PackedScene" path="res://scenes/homestead.tscn" id="16"]
 [ext_resource type="PackedScene" path="res://scenes/ui/upgrade_panel.tscn" id="17"]
@@ -30,6 +34,29 @@
 [ext_resource type="Resource" path="res://buildings/animal_pen.tres" id="44"]
 [ext_resource type="PackedScene" path="res://scenes/ui/pause_menu.tscn" id="45"]
 [ext_resource type="PackedScene" path="res://scenes/ui/damage_vignette.tscn" id="46"]
+[ext_resource type="PackedScene" path="res://scenes/ui/tutorial_overlay.tscn" id="47"]
+[ext_resource type="Resource" path="res://buildings/ballista_tower.tres" id="48"]
+[ext_resource type="Resource" path="res://buildings/sling_post.tres" id="54"]
+[ext_resource type="PackedScene" path="res://scenes/ranged_raider_enemy.tscn" id="49"]
+[ext_resource type="PackedScene" path="res://scenes/siege_enemy.tscn" id="56"]
+[ext_resource type="PackedScene" path="res://scenes/berry_bush.tscn" id="50"]
+[ext_resource type="PackedScene" path="res://scenes/ui/world_tooltip.tscn" id="51"]
+[ext_resource type="PackedScene" path="res://scenes/fishing_spot.tscn" id="52"]
+[ext_resource type="PackedScene" path="res://scenes/ruin.tscn" id="53"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_bulbcluster_prop.tscn" id="57"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_capshroom_prop.tscn" id="58"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_creepvine_prop.tscn" id="59"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_glowspire_prop.tscn" id="60"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_lanternbud_prop.tscn" id="61"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_starmoss_prop.tscn" id="62"]
+[ext_resource type="PackedScene" path="res://scenes/props/flora_veilfern_prop.tscn" id="63"]
+[ext_resource type="PackedScene" path="res://scenes/ui/dawn_report.tscn" id="64"]
+[ext_resource type="Resource" path="res://buildings/scarecrow.tres" id="65"]
+[ext_resource type="Resource" path="res://buildings/net_trap.tres" id="66"]
+[ext_resource type="Resource" path="res://buildings/torch.tres" id="69"]
+[ext_resource type="Resource" path="res://buildings/bridge.tres" id="72"]
+[ext_resource type="PackedScene" path="res://scenes/locust_enemy.tscn" id="67"]
+[ext_resource type="PackedScene" path="res://scenes/wolf_enemy.tscn" id="68"]
 
 [sub_resource type="PlaneMesh" id="1"]
 size = Vector2(64, 64)
@@ -46,13 +73,18 @@ ssao_intensity = 1.5
 fog_enabled = true
 fog_light_color = Color(0.7, 0.75, 0.78, 1)
 fog_density = 0.008
+ambient_light_source = 2
+ambient_light_color = Color(0.25, 0.28, 0.35, 1)
+ambient_light_energy = 0.6
 glow_enabled = true
 glow_intensity = 0.5
 glow_bloom = 0.05
 
-[sub_resource type="StandardMaterial3D" id="8"]
-albedo_color = Color(0.28, 0.4, 0.22, 1)
-roughness = 0.95
+[sub_resource type="ShaderMaterial" id="8"]
+shader = ExtResource("55")
+shader_parameter/day_color = Color(0.3, 0.45, 0.25, 1)
+shader_parameter/night_color = Color(0.09, 0.13, 0.15, 1)
+shader_parameter/roughness_value = 0.95
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1")
@@ -97,6 +129,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0, 2)
 
 [node name="VillagerPanel" parent="." instance=ExtResource("13")]
 
+[node name="CropSelectPanel" parent="." instance=ExtResource("73")]
+
 [node name="Entities" type="Node3D" parent="."]
 
 [node name="BuildManager" type="Node3D" parent="."]
@@ -121,33 +155,50 @@ entities_container_path = NodePath("../Entities")
 [node name="WaveSpawner" type="Node" parent="."]
 script = ExtResource("10")
 raider_scene = ExtResource("9")
+ranged_raider_scene = ExtResource("49")
 brute_scene = ExtResource("14")
+siege_scene = ExtResource("56")
+locust_scene = ExtResource("67")
+wolf_scene = ExtResource("68")
 spawn_point_path = NodePath("../EnemySpawn")
 home_base_path = NodePath("../HomeBase")
 entities_container_path = NodePath("../Entities")
+map_builder_path = NodePath("../MapBuilder")
 
 [node name="MapBuilder" type="Node3D" parent="."]
 script = ExtResource("28")
 theme = ExtResource("27")
 seed_override = 0
-tree_scene = ExtResource("5")
+tree_scenes = Array[PackedScene]([ExtResource("5"), ExtResource("70"), ExtResource("71")])
 rock_scene = ExtResource("11")
 hay_scene = ExtResource("21")
+berry_bush_scene = ExtResource("50")
+fishing_spot_scene = ExtResource("52")
 farm_plot_scene = ExtResource("6")
 fence_scene = ExtResource("19")
+ruin_scene = ExtResource("53")
+ruin_reward_defs = Array[BuildingDef]([ExtResource("40"), ExtResource("42"), ExtResource("43")])
 homestead_path = NodePath("../Homestead")
 home_base_path = NodePath("../HomeBase")
 enemy_spawn_path = NodePath("../EnemySpawn")
+ground_mesh_path = NodePath("../Ground/MeshInstance3D")
 villager_paths = Array[NodePath]([NodePath("../Villager"), NodePath("../Villager2")])
+flora_scenes = Array[PackedScene]([ExtResource("57"), ExtResource("58"), ExtResource("59"), ExtResource("60"), ExtResource("61"), ExtResource("62"), ExtResource("63")])
 
 [node name="UpgradePanel" parent="." instance=ExtResource("17")]
 
 [node name="EndScreen" parent="." instance=ExtResource("18")]
 
+[node name="DawnReport" parent="." instance=ExtResource("64")]
+
 [node name="BuildMenu" parent="." instance=ExtResource("37")]
-building_defs = Array[BuildingDef]([ExtResource("38"), ExtResource("39"), ExtResource("40"), ExtResource("41"), ExtResource("42"), ExtResource("43"), ExtResource("44")])
+building_defs = Array[BuildingDef]([ExtResource("38"), ExtResource("39"), ExtResource("40"), ExtResource("41"), ExtResource("42"), ExtResource("43"), ExtResource("44"), ExtResource("48"), ExtResource("54"), ExtResource("65"), ExtResource("66"), ExtResource("69"), ExtResource("72")])
 build_manager_path = NodePath("../BuildManager")
 
 [node name="PauseMenu" parent="." instance=ExtResource("45")]
 
 [node name="DamageVignette" parent="." instance=ExtResource("46")]
+
+[node name="TutorialOverlay" parent="." instance=ExtResource("47")]
+
+[node name="WorldTooltip" parent="." instance=ExtResource("51")]

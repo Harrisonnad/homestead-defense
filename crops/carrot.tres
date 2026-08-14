@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CropDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/crop_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+crop_name = "Carrot"
+ammo_type = "darts"
+yield_amount = 12
+days_to_grow = 1
+tint = Color(0.85, 0.35, 0.15, 1)

@@ -1,26 +1,24 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/resource_node.gd" id="1"]
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/hayBales_S.png" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_hay_bale.glb" id="2"]
+[ext_resource type="Material" path="res://assets/custom_pack/day_night.tres" id="3"]
 
 [sub_resource type="BoxShape3D" id="1"]
 size = Vector3(1.5, 1.0, 1.5)
 
 [node name="HayBale" type="StaticBody3D"]
 script = ExtResource("1")
+input_ray_pickable = true
+display_name = "Hay Bale"
 resource_type = "food"
 gather_amount = 8
-respawn_seconds = 12.0
-input_ray_pickable = true
+respawn_seconds = 24.0
+pack_material = ExtResource("3")
 
 [node name="Visual" type="Node3D" parent="."]
 
-[node name="Sprite3D" type="Sprite3D" parent="Visual"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
-texture = ExtResource("2")
-pixel_size = 0.0078125
-shaded = true
-alpha_cut = 1
+[node name="Model" parent="Visual" instance=ExtResource("2")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)

@@ -12,4 +12,4 @@ resource_cost = {"stone": 8}
 build_time_seconds = 2.0
 scene = ExtResource("2")
 max_health = 1
-description = "One-shot ambush damage. Doesn't block movement, consumed on trigger."
+description = "One-shot ambush damage that explodes, catching nearby enemies too. Doesn't block movement, consumed on trigger. Needs 1 Grenade loaded from stockpile to actually go off - keep Tomato plots growing."

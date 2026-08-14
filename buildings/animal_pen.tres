@@ -13,4 +13,4 @@ build_time_seconds = 6.0
 scene = ExtResource("2")
 max_health = 60
 passive_resource_output = {"food": 6}
-description = "Passive food income at dawn. Bonus output on generated animal-zone tiles."
+description = "Passive food income at dawn (bonus on generated animal-zone tiles). The chickens raise the alarm the moment a raid gets close, and a Dog patrols the pen, fighting nearby enemies for free - doesn't use up villager population."

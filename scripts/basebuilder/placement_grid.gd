@@ -47,8 +47,35 @@ func in_bounds(tile: Vector2i) -> bool:
 func is_buildable_biome(tile: Vector2i) -> bool:
 	return in_bounds(tile) and biomes[tile.y][tile.x] in BUILDABLE_BIOMES
 
+func is_water(tile: Vector2i) -> bool:
+	return in_bounds(tile) and biomes[tile.y][tile.x] == "water"
+
 func is_chokepoint(tile: Vector2i) -> bool:
 	return chokepoint_tiles.has(tile)
+
+# Used wherever a spawn position is a fixed offset rather than something
+# already validated against the map (initial villagers and recruited
+# villagers - see map_builder.gd's _place_landmarks() and homestead.gd's
+# recruit_villager handler) - since water tiles got real collision this
+# session, a CharacterBody3D that spawns already overlapping one gets stuck
+# immediately instead of gracefully sliding around it (matches the same risk
+# wave_spawner.gd's _is_on_water() already guards against for enemies).
+# Searches expanding square rings of nearby tiles for the nearest non-water,
+# in-bounds tile; falls back to the original position if none found within
+# max_radius (only plausible if the position is deep inside a large lake).
+func find_nearest_non_water(world_pos: Vector3, max_radius: int = 4) -> Vector3:
+	var origin_tile := world_to_tile(world_pos)
+	if not is_water(origin_tile):
+		return world_pos
+	for radius in range(1, max_radius + 1):
+		for dy in range(-radius, radius + 1):
+			for dx in range(-radius, radius + 1):
+				if maxi(abs(dx), abs(dy)) != radius:
+					continue
+				var tile := origin_tile + Vector2i(dx, dy)
+				if in_bounds(tile) and not is_water(tile):
+					return tile_to_world(tile)
+	return world_pos
 
 func zone_bonus_multiplier(tile: Vector2i, category: String) -> float:
 	if category == "farm" and crop_plot_tiles.has(tile):
@@ -65,7 +92,12 @@ func check_placement(origin: Vector2i, footprint_size: Vector2i, category: Strin
 	for tile in tiles:
 		if not in_bounds(tile):
 			return {"ok": false, "reason": "out of bounds", "chokepoint": false, "bonus": 1.0}
-		if not is_buildable_biome(tile):
+		# Bridge (#28) is the one category that requires water instead of
+		# forbidding it - everything else still needs grass/dirt.
+		if category == "bridge":
+			if not is_water(tile):
+				return {"ok": false, "reason": "bridges can only be built on water", "chokepoint": false, "bonus": 1.0}
+		elif not is_buildable_biome(tile):
 			return {"ok": false, "reason": "not buildable terrain", "chokepoint": false, "bonus": 1.0}
 		if occupied_tiles.has(tile):
 			return {"ok": false, "reason": "tile occupied", "chokepoint": false, "bonus": 1.0}

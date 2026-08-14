@@ -1,0 +1,80 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/resource_node.gd" id="1"]
+[ext_resource type="Shader" path="res://assets/terrain/landscape_day_night.gdshader" id="2"]
+
+[sub_resource type="CylinderMesh" id="1"]
+top_radius = 0.13
+bottom_radius = 0.17
+height = 0.8
+
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("2")
+shader_parameter/day_color = Color(0.34, 0.22, 0.13, 1)
+shader_parameter/night_color = Color(0.19, 0.13, 0.08, 1)
+shader_parameter/glow_color = Color(0.309804, 0.890196, 0.819608, 1)
+shader_parameter/glow_strength = 0.0
+shader_parameter/roughness_value = 0.95
+
+[sub_resource type="CylinderMesh" id="3"]
+top_radius = 0.0
+bottom_radius = 0.5
+height = 0.7
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = ExtResource("2")
+shader_parameter/day_color = Color(0.14, 0.4, 0.2, 1)
+shader_parameter/night_color = Color(0.09, 0.2, 0.22, 1)
+shader_parameter/glow_color = Color(0.309804, 0.890196, 0.819608, 1)
+shader_parameter/glow_strength = 0.15
+shader_parameter/roughness_value = 0.9
+
+[sub_resource type="CylinderMesh" id="5"]
+top_radius = 0.0
+bottom_radius = 0.38
+height = 0.55
+
+[sub_resource type="CylinderMesh" id="6"]
+top_radius = 0.0
+bottom_radius = 0.26
+height = 0.42
+
+[sub_resource type="BoxShape3D" id="7"]
+size = Vector3(1, 1.9, 1)
+
+[node name="TreePine" type="StaticBody3D"]
+script = ExtResource("1")
+input_ray_pickable = true
+display_name = "Tree"
+resource_type = "wood"
+gather_amount = 5
+respawn_seconds = 6.0
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="Trunk" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("2")
+
+[node name="TierBottom" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+mesh = SubResource("3")
+surface_material_override/0 = SubResource("4")
+
+[node name="TierMid" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.35, 0)
+mesh = SubResource("5")
+surface_material_override/0 = SubResource("4")
+
+[node name="TierTop" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.68, 0)
+mesh = SubResource("6")
+surface_material_override/0 = SubResource("4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
+shape = SubResource("7")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true

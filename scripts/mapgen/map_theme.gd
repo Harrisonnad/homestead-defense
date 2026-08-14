@@ -29,6 +29,7 @@ class_name MapTheme
 
 ## --- Resource & crop plots ---
 @export var resource_node_density: Vector2 = Vector2(0.02, 0.05) # per-tile probability range
+@export var fishing_spot_density: float = 0.05 # per-tile probability, water tiles only
 @export var crop_plot_density: Vector2 = Vector2(0.05, 0.1)
 @export var min_buildable_core_tiles: int = 150
 

@@ -12,11 +12,18 @@ const UPGRADES := {
 		"repeatable": false,
 		"description": "Gather twice as much per action",
 	},
-	"reinforced_walls": {
-		"name": "Reinforced Walls",
-		"costs": {"stone": 25},
+	"advance_age_2": {
+		"name": "Advance to Established Farm",
+		"costs": {"wood": 60, "stone": 60, "food": 30},
 		"repeatable": false,
-		"description": "New walls have 120 HP (cost +6 stone)",
+		"description": "Ages up the whole homestead: every existing and future Wall/Tower/House/Storehouse/Animal Pen/Trap/Farm Plot gets stronger stats and a visual upgrade. Walls: 120 HP.",
+	},
+	"advance_age_3": {
+		"name": "Advance to Fortified Farmstead",
+		"costs": {"wood": 100, "stone": 100, "food": 60},
+		"repeatable": false,
+		"requires": "advance_age_2",
+		"description": "The homestead's final tier: every building reaches its strongest stats and grandest look. Walls: 200 HP.",
 	},
 	"veteran_training": {
 		"name": "Veteran Training",
@@ -53,6 +60,9 @@ func can_purchase(id: String) -> bool:
 		return false
 	if id == "recruit_villager" and not GameState.has_population_room():
 		return false
+	var requires: String = UPGRADES[id].get("requires", "")
+	if requires != "" and not is_purchased(requires):
+		return false
 	return Economy.can_afford_all(UPGRADES[id]["costs"])
 
 func try_purchase(id: String) -> bool:
@@ -67,8 +77,21 @@ func try_purchase(id: String) -> bool:
 func gather_multiplier() -> int:
 	return 2 if is_purchased("sharp_tools") else 1
 
+# The homestead's overall Age/Era tier (docs/spec_base_builder.md's original
+# "Homestead -> Established Farm -> Fortified Farmstead" progression model).
+# Every building script reads this - directly, or via a helper like
+# wall_tier() below - both at its own _ready() and whenever a new age is
+# purchased, so advancing retroactively upgrades buildings already standing,
+# not just future construction.
+func homestead_age() -> int:
+	if is_purchased("advance_age_3"):
+		return 3
+	if is_purchased("advance_age_2"):
+		return 2
+	return 1
+
 func wall_tier() -> int:
-	return 2 if is_purchased("reinforced_walls") else 1
+	return homestead_age()
 
 func trap_damage_multiplier() -> int:
 	return 2 if is_purchased("heavy_traps") else 1

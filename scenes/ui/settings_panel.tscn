@@ -46,6 +46,29 @@ value = 0.8
 layout_mode = 2
 text = "Mute"
 
+[node name="HSeparator" type="HSeparator" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ResolutionRow" type="HBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ResolutionLabel" type="Label" parent="CenterContainer/PanelContainer/VBoxContainer/ResolutionRow"]
+layout_mode = 2
+text = "Resolution"
+
+[node name="ResolutionOption" type="OptionButton" parent="CenterContainer/PanelContainer/VBoxContainer/ResolutionRow"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullscreenCheck" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Fullscreen"
+
+[node name="VsyncCheck" type="CheckBox" parent="CenterContainer/PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "V-Sync"
+
 [node name="CloseButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
 text = "Close"

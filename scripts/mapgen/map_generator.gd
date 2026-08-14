@@ -45,6 +45,7 @@ func _generate_pass(p_seed: int) -> Dictionary:
 	var moisture := _generate_moisture()
 	var biomes := _assign_biomes(elevation, moisture)
 	var resources := _place_resources(biomes)
+	var fishing_spots := _place_fishing_spots(biomes)
 	var crop_plots := _place_crop_plots(biomes)
 	var chokepoints := _identify_chokepoints(elevation, biomes)
 	var animal_zones := _place_animal_zones(biomes, crop_plots)
@@ -55,6 +56,7 @@ func _generate_pass(p_seed: int) -> Dictionary:
 		"moisture": moisture,
 		"biomes": biomes,
 		"resources": resources,
+		"fishing_spots": fishing_spots,
 		"crop_plots": crop_plots,
 		"chokepoints": chokepoints,
 		"animal_zones": animal_zones,
@@ -145,6 +147,14 @@ func _place_resources(biomes: Array) -> Array:
 			if biomes[y][x] in ["grass", "dirt"] and rng.randf() < density:
 				nodes.append(Vector2i(x, y))
 	return nodes
+
+func _place_fishing_spots(biomes: Array) -> Array:
+	var spots := []
+	for y in range(map_size.y):
+		for x in range(map_size.x):
+			if biomes[y][x] == "water" and rng.randf() < theme.fishing_spot_density:
+				spots.append(Vector2i(x, y))
+	return spots
 
 func _place_crop_plots(biomes: Array) -> Array:
 	var plots := []

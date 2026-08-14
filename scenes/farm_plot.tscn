@@ -1,23 +1,33 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/farm_plot.gd" id="1"]
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/dirtFarmland_S.png" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_terrain_tile_tilled.glb" id="2"]
+[ext_resource type="Resource" path="res://crops/pumpkin.tres" id="3"]
+[ext_resource type="Resource" path="res://crops/carrot.tres" id="4"]
+[ext_resource type="Resource" path="res://crops/tomato.tres" id="5"]
+[ext_resource type="Resource" path="res://crops/pea.tres" id="6"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_fence_post.glb" id="7"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_banner_post.glb" id="8"]
+[ext_resource type="Resource" path="res://crops/corn.tres" id="9"]
+[ext_resource type="Resource" path="res://crops/sunflower.tres" id="10"]
 
 [sub_resource type="BoxShape3D" id="3"]
-size = Vector3(2, 0.2, 2)
+size = Vector3(1, 0.2, 1)
 
 [node name="FarmPlot" type="StaticBody3D"]
 input_ray_pickable = true
 script = ExtResource("1")
-food_yield = 15
+available_crops = Array[CropDef]([ExtResource("3"), ExtResource("4"), ExtResource("5"), ExtResource("6"), ExtResource("9"), ExtResource("10")])
 days_to_grow = 1
 
-[node name="Dirt" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
-texture = ExtResource("2")
-pixel_size = 0.0078125
-shaded = true
-alpha_cut = 1
+[node name="Dirt" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+
+[node name="Tile" parent="Dirt" instance=ExtResource("2")]
+
+[node name="AgeTrim2" parent="." instance=ExtResource("7")]
+transform = Transform3D(0.35, 0, 0, 0, 0.35, 0, 0, 0, 0.35, -0.5, 0, -0.5)
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
@@ -29,3 +39,5 @@ visible = false
 pixel_size = 0.0078125
 shaded = true
 alpha_cut = 1
+
+[node name="WardTimer" type="Timer" parent="."]

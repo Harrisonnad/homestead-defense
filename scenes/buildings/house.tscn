@@ -1,10 +1,16 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/basebuilder/building.gd" id="1"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/green/building_home_A_green.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_wall_corner.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_wall.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_door.glb" id="4"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_wall_window.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_roof.glb" id="6"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_roof_gable.glb" id="7"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_banner_post.glb" id="8"]
 
-[sub_resource type="BoxShape3D" id="3"]
-size = Vector3(1.9, 2.1, 2.0)
+[sub_resource type="BoxShape3D" id="9"]
+size = Vector3(2.0, 2.2, 2.0)
 
 [node name="House" type="StaticBody3D"]
 collision_layer = 2
@@ -13,9 +19,50 @@ script = ExtResource("1")
 max_health = 90
 population_cap_bonus = 2
 
-[node name="Model" parent="." instance=ExtResource("2")]
-transform = Transform3D(2.3, 0, 0, 0, 2.3, 0, 0, 0, 2.3, 0, 0, 0)
+[node name="CornerBR" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -1)
+
+[node name="CornerTR" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1, 0, 1)
+
+[node name="CornerTL" parent="." instance=ExtResource("2")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, -1, -1, 0, 1)
+
+[node name="CornerBL" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, 1, 0, 1, 0, -1, 0, 0, -1, 0, -1)
+
+[node name="WallEast" parent="." instance=ExtResource("3")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1, 0, 0)
+
+[node name="WallWest" parent="." instance=ExtResource("3")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -1, 0, 0)
+
+[node name="DoorSouth" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
+
+[node name="WindowNorth" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+
+[node name="RoofSouth" parent="." instance=ExtResource("6")]
+transform = Transform3D(-1.9, 0, 0, 0, 1, 0, 0, 0, -1.3038, 0, 2, -0.4877)
+
+[node name="RoofNorth" parent="." instance=ExtResource("6")]
+transform = Transform3D(1.9, 0, 0, 0, 1, 0, 0, 0, 1.3038, 0, 2, 0.4877)
+
+[node name="GableEast" parent="." instance=ExtResource("7")]
+transform = Transform3D(0, 0, -2.0222, 0, 1.735, 0, 1, 0, 0, 1, 2, 0)
+
+[node name="GableWest" parent="." instance=ExtResource("7")]
+transform = Transform3D(0, 0, -2.0222, 0, 1.735, 0, 1, 0, 0, -1, 2, 0)
+
+[node name="AgeTrim2" parent="." instance=ExtResource("7")]
+transform = Transform3D(0.7, 0, 0, 0, 1.0, 0, 0, 0, 0.7, 0, 2.9, 0)
+visible = false
+
+[node name="AgeTrim3" parent="." instance=ExtResource("8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.9, 1.1, 0.9)
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.05, 0)
-shape = SubResource("3")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1, 0)
+shape = SubResource("9")

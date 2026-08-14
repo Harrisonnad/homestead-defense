@@ -1,8 +1,9 @@
 extends CanvasLayer
 
-# Escape toggles this, except while BuildManager has an active placement
-# ghost - that Escape cancels placement instead (checked explicitly here
-# rather than relying on _unhandled_input ordering between sibling nodes).
+# ui_cancel (Escape / gamepad B by default) toggles this, except while
+# BuildManager has an active placement ghost - ui_cancel cancels placement
+# instead (checked explicitly here rather than relying on _unhandled_input
+# ordering between sibling nodes).
 
 @export var build_manager_path: NodePath
 
@@ -21,7 +22,7 @@ func _ready() -> void:
 	$CenterContainer/PanelContainer/VBoxContainer/QuitButton.pressed.connect(_on_quit)
 
 func _unhandled_input(event: InputEvent) -> void:
-	if not (event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_ESCAPE):
+	if not event.is_action_pressed("ui_cancel"):
 		return
 	if GameState.ended:
 		return
@@ -36,6 +37,7 @@ func _unhandled_input(event: InputEvent) -> void:
 func _open() -> void:
 	panel_root.visible = true
 	get_tree().paused = true
+	$CenterContainer/PanelContainer/VBoxContainer/ResumeButton.grab_focus()
 
 func _close() -> void:
 	panel_root.visible = false

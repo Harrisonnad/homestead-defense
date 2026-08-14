@@ -4,12 +4,13 @@ class_name ConstructionSite
 # On collision layer 2 (set in the scene) so it's attackable like any other
 # building while under construction - a raid can interrupt a build.
 
-# Transient in-progress visual (KayKit scaffolding) that swaps itself for
+# Transient in-progress visual (sm_scaffold from the custom pack) that swaps itself for
 # the real building scene once build_time_seconds elapses. Has its own HP
 # so a raid can interrupt construction, in which case the footprint tile(s)
 # are released rather than left permanently blocked.
 
-const SCAFFOLD_NATIVE_WIDTH := 1.9
+const SCAFFOLD_NATIVE_WIDTH := 1.0
+const PACK_MATERIAL := preload("res://assets/custom_pack/day_night.tres")
 
 @export var build_time_seconds: float = 3.0
 @export var final_scene: PackedScene
@@ -29,6 +30,7 @@ signal died
 
 func _ready() -> void:
 	current_health = max_health
+	CharacterVisualUtils.apply_pack_material(model, PACK_MATERIAL)
 	var scale_factor: float = maxf(footprint_size.x, footprint_size.y) / SCAFFOLD_NATIVE_WIDTH
 	model.scale = Vector3.ONE * scale_factor
 	timer.wait_time = build_time_seconds
@@ -53,8 +55,15 @@ func _on_complete() -> void:
 	building.placement_grid = placement_grid
 	if "chokepoint" in building and placement_grid:
 		building.chokepoint = placement_grid.is_chokepoint(footprint_origin)
+	# Generic optional hook for buildings that need their footprint_origin
+	# already assigned before doing anything (Bridge - see scripts/bridge.gd -
+	# can't clear water collision in its own _ready(), which runs synchronously
+	# during add_child() above, before footprint_origin is set here).
+	if building.has_method("on_footprint_ready"):
+		building.on_footprint_ready()
 	if source_def_path != "":
 		building.set_meta("building_def_path", source_def_path)
 	building.add_to_group("player_buildings")
 	completed.emit(building)
+	AchievementManager.on_building_completed(building)
 	queue_free()

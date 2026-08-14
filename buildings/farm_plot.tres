@@ -12,4 +12,4 @@ resource_cost = {"wood": 5}
 build_time_seconds = 2.0
 scene = ExtResource("2")
 max_health = 20
-description = "Plant, grow, and harvest food. Bonus yield on generated crop-plot tiles."
+description = "Auto-cycles Pumpkin/Carrot/Tomato/Pea/Corn/Sunflower (or pick one yourself), yielding cannonballs/darts/grenades/bullets/food. Corn is a food crop - feeds Age advancement and recruiting new villagers. Sunflower lights up its plot at night and wards off Locust Swarms while it's growing. Bonus yield on generated crop-plot tiles."

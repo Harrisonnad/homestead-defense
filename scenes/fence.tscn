@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/wall.gd" id="1"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_wood_straight.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_fence_post.glb" id="2"]
 
-[sub_resource type="BoxShape3D" id="1"]
-size = Vector3(2, 1.0, 0.4)
+[sub_resource type="BoxShape3D" id="3"]
+size = Vector3(1.0, 1.1, 0.3)
 
 [node name="Fence" type="StaticBody3D"]
 collision_layer = 2
@@ -14,8 +14,7 @@ max_health = 15
 upgradable = false
 
 [node name="Model" parent="." instance=ExtResource("2")]
-transform = Transform3D(0, 0, -1.7320508, 0, 1.7320508, 0, 1.7320508, 0, 0, 0, 0, 0)
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("1")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.55, 0)
+shape = SubResource("3")

@@ -1,0 +1,38 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/tower.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_watchtower_base.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_rampart_walkway.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_banner_post.glb" id="4"]
+
+[sub_resource type="BoxShape3D" id="5"]
+size = Vector3(1.0, 1.6, 1.0)
+
+[node name="SlingPost" type="StaticBody3D"]
+collision_layer = 2
+collision_mask = 0
+script = ExtResource("1")
+max_health = 50
+damage = 4
+attack_interval = 0.5
+attack_range = 5.0
+ammo_type = "bullets"
+attack_pattern = 2
+spray_max_targets = 3
+
+[node name="Base" parent="." instance=ExtResource("2")]
+
+[node name="AgeTrim2" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+visible = false
+
+[node name="AgeTrim3" parent="." instance=ExtResource("4")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, 0.3, 1.4, 0.3)
+visible = false
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
+shape = SubResource("5")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 0.5

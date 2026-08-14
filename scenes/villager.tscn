@@ -1,10 +1,13 @@
-[gd_scene load_steps=6 format=3]
+[gd_scene load_steps=9 format=3]
 
 [ext_resource type="Script" path="res://scripts/villager.gd" id="1"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Characters/gltf/Mage.glb" id="2"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Characters/gltf/Ranger.glb" id="3"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Characters/gltf/Rogue.glb" id="4"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Adventurers_2.0_FREE/Characters/gltf/Knight.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sk_villager.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_tool_hoe_basic.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_tool_axe_basic.glb" id="4"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_tool_sword.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_farmer_hat.glb" id="6"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_gatherer_gear.glb" id="7"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_guard_gear.glb" id="8"]
 
 [sub_resource type="CapsuleShape3D" id="1"]
 radius = 0.35
@@ -12,7 +15,7 @@ height = 1.5
 
 [node name="Villager" type="CharacterBody3D"]
 collision_layer = 1
-collision_mask = 0
+collision_mask = 2
 motion_mode = 1
 input_ray_pickable = true
 script = ExtResource("1")
@@ -23,22 +26,44 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("1")
 
 [node name="ModelNone" parent="." instance=ExtResource("2")]
-transform = Transform3D(0.72, 0, 0, 0, 0.72, 0, 0, 0, 0.72, 0, 0, 0)
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
 
-[node name="ModelFarmer" parent="." instance=ExtResource("3")]
-transform = Transform3D(0.72, 0, 0, 0, 0.72, 0, 0, 0, 0.72, 0, 0, 0)
+[node name="ModelFarmer" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
 
-[node name="ModelGatherer" parent="." instance=ExtResource("4")]
-transform = Transform3D(0.72, 0, 0, 0, 0.72, 0, 0, 0, 0.72, 0, 0, 0)
+[node name="ModelGatherer" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
 
-[node name="ModelGuard" parent="." instance=ExtResource("5")]
-transform = Transform3D(0.72, 0, 0, 0, 0.72, 0, 0, 0, 0.72, 0, 0, 0)
+[node name="ModelGuard" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+
+[node name="GearFarmer" parent="." instance=ExtResource("6")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+
+[node name="GearGatherer" parent="." instance=ExtResource("7")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+
+[node name="GearGuard" parent="." instance=ExtResource("8")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+
+[node name="ToolFarmer" parent="." instance=ExtResource("3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.3, -0.05)
+
+[node name="ToolGatherer" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.3, -0.05)
+
+[node name="ToolGuard" parent="." instance=ExtResource("5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.22, 0.55, -0.05)
 
 [node name="WorkTimer" type="Timer" parent="."]
 wait_time = 1.5
 one_shot = true
 
 [node name="RetryTimer" type="Timer" parent="."]
+wait_time = 1.0
+one_shot = true
+
+[node name="WanderTimer" type="Timer" parent="."]
 wait_time = 1.0
 one_shot = true
 

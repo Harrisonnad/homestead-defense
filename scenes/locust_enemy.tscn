@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/locust.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sk_crawler.glb" id="2"]
+
+[sub_resource type="CapsuleShape3D" id="3"]
+radius = 0.3
+height = 0.35
+
+[sub_resource type="SphereShape3D" id="4"]
+radius = 1.2
+
+[node name="Locust" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("1")
+move_speed = 2.8
+attack_damage = 5
+raid_resource_loss = {"wood": 2, "food": 2}
+raid_homestead_damage = 6
+max_health = 12
+creature_name = "sk_crawler"
+flee_on_damage = true
+
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+shape = SubResource("3")
+
+[node name="AttackRange" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 11
+monitoring = true
+
+[node name="AttackRangeShape" type="CollisionShape3D" parent="AttackRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.18, 0)
+shape = SubResource("4")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 1.0
+
+[node name="VillagerScanTimer" type="Timer" parent="."]
+wait_time = 1.0

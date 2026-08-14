@@ -20,16 +20,18 @@ Defines the base-building and economy layer of the game. Player-managed structur
 
 ## Building categories and asset mapping
 
-| Category | Source asset pack | Footprint role | Gameplay role |
-|---|---|---|---|
-| Core / House | KayKit Medieval Hexagon Pack | 2x2 or 3x3 | Population cap, respawn/spawn point |
-| Farm plots | Farming pack w/ crop growth stages | 1x1 per plot | Resource economy, feeds crop-to-defense conversion |
-| Walls / chokepoint structures | Hexagon Pack + Dungeon Pack props | 1xN linear | Funnels raiders into flagged chokepoint tiles |
-| Defense towers / traps | KayKit Platformer Pack (traps) + Fantasy Weapons Bits | 1x1 or 2x2 | Night-phase raid defense |
-| Storage / Barn | KayKit City Builder Bits | 2x2 | Increases resource storage cap |
-| Animal pens | Kenney Animal Pack Redux + LowPoly Animated Farm Animal Pack | 2x2 or 3x3 | Passive resource generation (eggs, wool, milk) |
+Superseded — this originally spec'd sourcing from third-party KayKit/Kenney packs, but the game now ships entirely on the project's own custom asset pack (`../asset-pack/`, see `docs/CREDITS.md`: "no third-party art ships in the game anymore"). Table below reflects what's actually loaded (see `asset-pack/README.md`'s asset log for full per-mesh detail):
 
-Style note: KayKit packs share a consistent gradient-atlas low-poly look; mixing Kenney/OpenGameArt animal assets alongside them is the one deliberate style seam and may need a shared post-process/shader pass to visually unify (see Open Questions).
+| Category | Custom pack assets | Footprint role | Gameplay role |
+|---|---|---|---|
+| Core / House | `sm_farm_*` modular kit-bash (House/Storehouse); Homestead uses the dedicated hero mesh `sm_homestead` | 2x2 or 3x3 | Population cap, respawn/spawn point |
+| Farm plots | `sm_crop_*` (5 crop types x 4 growth stages), `sm_terrain_tile_tilled` | 1x1 per plot | Resource economy, feeds crop-to-defense conversion |
+| Walls / chokepoint structures | `sm_palisade_*`, `sm_fence_post`, `sm_defense_wall_slit` | 1xN linear | Funnels raiders into flagged chokepoint tiles |
+| Defense towers / traps | `sm_watchtower_base`/`_platform`, `sm_spike_trap`, `sm_barricade`, `sm_rampart_walkway` | 1x1 or 2x2 | Night-phase raid defense |
+| Storage / Barn | `sm_farm_*` modular kit-bash, same kit as House | 2x2 | Increases resource storage cap |
+| Animal pens | `sk_cow`, `sk_chicken`, `sm_fence_post`, `sm_barricade` | 2x2 or 3x3 | Passive resource generation (eggs, wool, milk) |
+
+Style note: every category shares the one trim sheet + day/night shader from `asset-pack/` (master doc §2/§5), so there's no cross-pack visual seam to unify — the concern this section originally raised about mixing KayKit and Kenney art no longer applies.
 
 ## Data structure: BuildingDef (Resource)
 Mirrors the `MapTheme` resource pattern — one `.tres` file per building type, no code changes needed to add new buildings.
@@ -66,12 +68,15 @@ Fields:
 - Consider disabling new construction during night, or allow only emergency/cheap defense placement — TBD, see Open Questions.
 
 ## Progression model
+
+**Implemented** — see `docs/architecture-decisions.md`'s "Homestead Age/Era progression system" entry and `README.md`'s matching status block. `Progression.homestead_age()` is the single source of truth; every building script applies its own age retroactively via `Progression.upgrade_purchased`. The design below is what actually got built, not just the original intent.
+
 Instead of new building categories per tier (which would require new asset packs), progression reuses the **same building slots with upgraded stats/visual scale**:
 - Tier 1: "Homestead" — base versions of all categories.
 - Tier 2: "Established Farm" — improved farm yield, stronger walls, more storage.
 - Tier 3: "Fortified Farmstead" — best defense stats, largest population/storage caps.
 
-This keeps art budget contained: reuse existing KayKit/Kenney assets with recoloring, scaling, or additive prop-stacking (e.g., adding a second wall-prop layer) rather than sourcing new packs per tier.
+This keeps art budget contained: reuse existing custom-pack assets with recoloring, scaling, or additive prop-stacking (e.g., adding a second wall-prop layer via the shared `AgeTrim2`/`AgeTrim3` convention) rather than sourcing new packs per tier.
 
 ## Integration points with other systems
 - **Map Generation (`spec_procedural_maps.md`)**: base builder consumes `biomes`, `resources`, `crop_plots`, `chokepoints`, `animal_zones` from generated map data. Do not duplicate validation logic — call into the same validator utilities for per-tile runtime checks.
@@ -81,6 +86,5 @@ This keeps art budget contained: reuse existing KayKit/Kenney assets with recolo
 - Exact resource cost/build-time balancing (needs playtesting).
 - Whether construction is fully disabled at night or allowed at a penalty/cost premium.
 - Whether chokepoint placement bonus should ever become a hard requirement (e.g., walls only buildable on flagged tiles) vs. remaining a soft suggestion.
-- Shared shader/post-process pass to unify KayKit assets with non-KayKit animal assets (Kenney/OpenGameArt) so animal pens don't visually clash with the rest of the base.
 - Population cap formula and starting values.
 - How AI/pathing for gathering units should be implemented (separate system, not covered here).

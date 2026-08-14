@@ -1,10 +1,13 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=7 format=3]
 
-[ext_resource type="Script" path="res://scripts/basebuilder/building.gd" id="1"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/neutral/fence_wood_straight.gltf" id="2"]
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_animal-pack-remastered/PNG/Round/cow.png" id="3"]
+[ext_resource type="Script" path="res://scripts/basebuilder/animal_pen.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_fence_post.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sk_cow.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sk_chicken.glb" id="4"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_barricade.glb" id="5"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_banner_post.glb" id="6"]
 
-[sub_resource type="BoxShape3D" id="4"]
+[sub_resource type="BoxShape3D" id="7"]
 size = Vector3(2, 1.0, 2)
 
 [node name="AnimalPen" type="StaticBody3D"]
@@ -14,25 +17,47 @@ script = ExtResource("1")
 max_health = 60
 passive_resource_output = {"food": 6}
 
-[node name="FenceNorth" parent="." instance=ExtResource("2")]
-transform = Transform3D(0, 0, -1.7320508, 0, 1.7320508, 0, 1.7320508, 0, 0, 0, 0, -1)
+[node name="FenceNorthA" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -1)
 
-[node name="FenceSouth" parent="." instance=ExtResource("2")]
-transform = Transform3D(0, 0, -1.7320508, 0, 1.7320508, 0, 1.7320508, 0, 0, 0, 0, 1)
+[node name="FenceNorthB" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, -1)
 
-[node name="FenceWest" parent="." instance=ExtResource("2")]
-transform = Transform3D(1.7320508, 0, 0, 0, 1.7320508, 0, 0, 0, 1.7320508, -1, 0, 0)
+[node name="FenceSouthA" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, 1)
 
-[node name="FenceEast" parent="." instance=ExtResource("2")]
-transform = Transform3D(1.7320508, 0, 0, 0, 1.7320508, 0, 0, 0, 1.7320508, 1, 0, 0)
+[node name="FenceSouthB" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 1)
 
-[node name="Cow" type="Sprite3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.618, 0)
-texture = ExtResource("3")
-pixel_size = 0.00966
-shaded = true
-alpha_cut = 1
+[node name="FenceWestA" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -1, 0, -0.5)
+
+[node name="FenceWestB" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, -1, 0, 0.5)
+
+[node name="FenceEastA" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1, 0, -0.5)
+
+[node name="FenceEastB" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 1, 0, 0.5)
+
+[node name="Cow" parent="." instance=ExtResource("3")]
+
+[node name="Chicken" parent="." instance=ExtResource("4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6, 0, -0.6)
+
+[node name="AgeTrim2" parent="." instance=ExtResource("5")]
+transform = Transform3D(0.6, 0, 0, 0, 0.6, 0, 0, 0, 0.6, -1, 0, -1)
+visible = false
+
+[node name="AgeTrim3" parent="." instance=ExtResource("6")]
+transform = Transform3D(0.7, 0, 0, 0, 0.7, 0, 0, 0, 0.7, 1, 0, -1)
+visible = false
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
-shape = SubResource("4")
+shape = SubResource("7")
+
+[node name="AlarmTimer" type="Timer" parent="."]
+wait_time = 1.0
+

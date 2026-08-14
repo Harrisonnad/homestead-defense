@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/wolf.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sk_wolf.glb" id="2"]
+
+[sub_resource type="CapsuleShape3D" id="3"]
+radius = 0.32
+height = 0.72
+
+[sub_resource type="SphereShape3D" id="4"]
+radius = 1.6
+
+[node name="Wolf" type="CharacterBody3D"]
+collision_layer = 4
+collision_mask = 2
+motion_mode = 1
+script = ExtResource("1")
+move_speed = 2.3
+attack_damage = 16
+raid_resource_loss = {"wood": 8, "food": 8}
+raid_homestead_damage = 20
+max_health = 45
+creature_name = "sk_wolf"
+pen_raid_damage = 20
+
+[node name="Model" parent="." instance=ExtResource("2")]
+transform = Transform3D(0, 0, -1, 0, 1, 0, 1, 0, 0, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0)
+shape = SubResource("3")
+
+[node name="AttackRange" type="Area3D" parent="."]
+collision_layer = 0
+collision_mask = 11
+monitoring = true
+
+[node name="AttackRangeShape" type="CollisionShape3D" parent="AttackRange"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.36, 0)
+shape = SubResource("4")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 1.0
+
+[node name="VillagerScanTimer" type="Timer" parent="."]
+wait_time = 1.0

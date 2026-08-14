@@ -25,10 +25,20 @@ Economy="*res://scripts/autoload/economy.gd"
 Selection="*res://scripts/autoload/selection.gd"
 Progression="*res://scripts/autoload/progression.gd"
 GameState="*res://scripts/autoload/game_state.gd"
+AchievementManager="*res://scripts/autoload/achievement_manager.gd"
+NightReport="*res://scripts/autoload/night_report.gd"
 Settings="*res://scripts/autoload/settings.gd"
 SaveManager="*res://scripts/autoload/save_manager.gd"
 NotificationManager="*res://scenes/ui/notification_toast.tscn"
+MusicPlayer="*res://scripts/autoload/music_player.gd"
 
 [gui]
 
 theme/custom="res://themes/ui_theme.tres"
+
+[shader_globals]
+
+day_night_ratio={
+"type": "float",
+"value": 0.0
+}

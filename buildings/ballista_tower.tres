@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/building_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/ballista_tower.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+building_name = "Ballista Tower"
+category = "defense"
+footprint_size = Vector2i(1, 1)
+resource_cost = {"wood": 25, "stone": 40}
+build_time_seconds = 10.0
+scene = ExtResource("2")
+max_health = 100
+defense_stats = {"damage": 18, "range": 11.0, "interval": 1.8}
+description = "Long-range siege tower. Cannonballs splash on impact, damaging enemies clustered near the target too. Fires slower and costs more than a Watchtower. Consumes 1 Cannonball per shot - keep Pumpkin plots growing."

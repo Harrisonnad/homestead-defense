@@ -5,7 +5,16 @@
 # Godot-generated import/export artifacts
 *.translation
 export.cfg
-export_presets.cfg
+
+# Local export build outputs (matches export_presets.cfg's export_path
+# values) - build products, not source, and the Windows .exe/.zip alone
+# run ~500MB. CI builds these fresh from source; never commit them.
+/builds/
+/HomesteadDefense.exe
+/HomesteadDefense.console.exe
+/HomesteadDefense.zip
+/HomesteadDefense.x86_64
+*.pck
 
 # Asset packs ship the same models in gltf/fbx/obj; this project only ever
 # uses gltf/glb, and some KayKit obj sidecar filenames exceed Windows' path

@@ -66,12 +66,11 @@ func _unhandled_input(event: InputEvent) -> void:
 			_try_place()
 		elif event.button_index == MOUSE_BUTTON_RIGHT:
 			cancel_placing()
-	elif event is InputEventKey and event.pressed and not event.echo:
-		if event.keycode == KEY_R:
-			rotation_steps = (rotation_steps + 1) % 4
-		elif event.keycode == KEY_ESCAPE:
-			cancel_placing()
-			get_viewport().set_input_as_handled()
+	elif event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_R:
+		rotation_steps = (rotation_steps + 1) % 4
+	elif event.is_action_pressed("ui_cancel"):
+		cancel_placing()
+		get_viewport().set_input_as_handled()
 
 func _process(_delta: float) -> void:
 	if selected_def == null or ghost_instance == null:

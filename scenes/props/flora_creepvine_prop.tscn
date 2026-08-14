@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/pack_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_flora_creepvine.glb" id="2"]
+
+[node name="FloraCreepvineProp" type="Node3D"]
+script = ExtResource("1")
+
+[node name="Flora" parent="." instance=ExtResource("2")]

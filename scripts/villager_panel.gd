@@ -14,9 +14,13 @@ var current_villager: Villager = null
 func _ready() -> void:
 	panel.visible = false
 	Selection.villager_selected.connect(_on_villager_selected)
+	Selection.farm_plot_selected.connect(_on_other_panel_selected)
 	farmer_button.pressed.connect(_on_farmer_pressed)
 	gatherer_button.pressed.connect(_on_gatherer_pressed)
 	guard_button.pressed.connect(_on_guard_pressed)
+
+func _on_other_panel_selected(_plot: Node) -> void:
+	panel.visible = false
 
 func _on_villager_selected(villager: Villager) -> void:
 	current_villager = villager

@@ -1,11 +1,20 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=4 format=3]
 
 [ext_resource type="Script" path="res://scripts/homestead.gd" id="1"]
-[ext_resource type="PackedScene" path="res://docs/assets/KayKit/KayKit_Medieval_Hexagon_Pack_1.0_FREE/KayKit_Medieval_Hexagon_Pack_1.0_FREE/Assets/gltf/buildings/green/building_windmill_green.gltf" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_homestead.glb" id="2"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_farm_roof_gable.glb" id="3"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_banner_post.glb" id="4"]
 
 [node name="Homestead" type="Node3D"]
 script = ExtResource("1")
 max_health = 100
 
 [node name="Model" parent="." instance=ExtResource("2")]
-transform = Transform3D(2.5, 0, 0, 0, 2.5, 0, 0, 0, 2.5, 0, 1.252105, 0)
+
+[node name="AgeTrim2" parent="." instance=ExtResource("3")]
+transform = Transform3D(0.55, 0, 0, 0, 0.55, 0, 0, 0, 0.55, 0, 0.075, 2.66)
+visible = false
+
+[node name="AgeTrim3" parent="." instance=ExtResource("4")]
+transform = Transform3D(1.2, 0, 0, 0, 1.2, 0, 0, 0, 1.2, 1.45, 1.15, 0)
+visible = false

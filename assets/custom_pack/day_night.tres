@@ -1,0 +1,16 @@
+[gd_resource type="ShaderMaterial" load_steps=5 format=3]
+
+[ext_resource type="Shader" path="res://assets/custom_pack/day_night.gdshader" id="1"]
+[ext_resource type="Texture2D" path="res://assets/custom_pack/textures/trim_sheet_day.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/custom_pack/textures/trim_sheet_night.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/custom_pack/textures/emission_mask.png" id="4"]
+
+[resource]
+render_priority = 0
+shader = ExtResource("1")
+shader_parameter/day_albedo = ExtResource("2")
+shader_parameter/night_albedo = ExtResource("3")
+shader_parameter/emission_mask = ExtResource("4")
+shader_parameter/glow_color = Color(0.309804, 0.890196, 0.819608, 1)
+shader_parameter/glow_core_color = Color(0.909804, 1, 0.984314, 1)
+shader_parameter/roughness_value = 0.85

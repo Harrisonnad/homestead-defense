@@ -1,0 +1,64 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/resource_node.gd" id="1"]
+[ext_resource type="Shader" path="res://assets/terrain/landscape_day_night.gdshader" id="2"]
+
+[sub_resource type="CylinderMesh" id="1"]
+top_radius = 0.55
+bottom_radius = 0.55
+height = 0.06
+
+[sub_resource type="ShaderMaterial" id="2"]
+shader = ExtResource("2")
+shader_parameter/day_color = Color(0.42, 0.32, 0.16, 1)
+shader_parameter/night_color = Color(0.24, 0.18, 0.1, 1)
+shader_parameter/glow_color = Color(0.309804, 0.890196, 0.819608, 1)
+shader_parameter/glow_strength = 0.0
+shader_parameter/roughness_value = 0.9
+
+[sub_resource type="SphereMesh" id="3"]
+radius = 0.14
+height = 0.2
+
+[sub_resource type="ShaderMaterial" id="4"]
+shader = ExtResource("2")
+shader_parameter/day_color = Color(0.55, 0.65, 0.7, 1)
+shader_parameter/night_color = Color(0.3, 0.38, 0.42, 1)
+shader_parameter/glow_color = Color(0.309804, 0.890196, 0.819608, 1)
+shader_parameter/glow_strength = 0.2
+shader_parameter/roughness_value = 0.6
+
+[sub_resource type="BoxShape3D" id="5"]
+size = Vector3(1.2, 0.3, 1.2)
+
+[node name="FishingSpot" type="StaticBody3D"]
+script = ExtResource("1")
+input_ray_pickable = true
+display_name = "Fishing Spot"
+resource_type = "food"
+gather_amount = 10
+respawn_seconds = 30.0
+
+[node name="Visual" type="Node3D" parent="."]
+
+[node name="NetRing" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.04, 0)
+mesh = SubResource("1")
+surface_material_override/0 = SubResource("2")
+
+[node name="Fish1" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.6, 0, 0, 0, 0.5, -0.6, 0, 0.6, 0.5, 0.18, 0.12, 0.1)
+mesh = SubResource("3")
+surface_material_override/0 = SubResource("4")
+
+[node name="Fish2" type="MeshInstance3D" parent="Visual"]
+transform = Transform3D(0.5, 0, 0.3, 0, 0.6, 0, -0.3, 0, 0.5, -0.2, 0.1, -0.15)
+mesh = SubResource("3")
+surface_material_override/0 = SubResource("4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.15, 0)
+shape = SubResource("5")
+
+[node name="CooldownTimer" type="Timer" parent="."]
+one_shot = true

@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
-[ext_resource type="Texture2D" path="res://docs/assets/kennys/kenney_isometric-miniature-farm/Angle/hayBalesStacked_S.png" id="1"]
+[ext_resource type="Script" path="res://scripts/pack_prop.gd" id="1"]
+[ext_resource type="PackedScene" path="res://assets/custom_pack/models/sm_prop_hay_bale.glb" id="2"]
 
-[node name="HayStackProp" type="Sprite3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.0, 0)
-texture = ExtResource("1")
-pixel_size = 0.0078125
-shaded = true
-alpha_cut = 1
+[node name="HayStackProp" type="Node3D"]
+script = ExtResource("1")
+
+[node name="BaleA" parent="." instance=ExtResource("2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.16, 0, -0.05)
+
+[node name="BaleB" parent="." instance=ExtResource("2")]
+transform = Transform3D(0.766, 0, 0.643, 0, 1, 0, -0.643, 0, 0.766, 0.18, 0, 0.12)

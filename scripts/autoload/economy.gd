@@ -8,14 +8,33 @@ const STARTING_RESOURCES := {
 	"wood": 0,
 	"food": 0,
 	"stone": 0,
+	# Ammo, produced by FarmPlot crops (see CropDef) and consumed by
+	# Watchtower/Ballista Tower/Spike Trap per shot - see crops/ *.tres.
+	"cannonballs": 0,
+	"darts": 0,
+	"grenades": 0,
+	"bullets": 0,
 }
 const BASE_STORAGE_CAP := 100
 
 var resources: Dictionary = STARTING_RESOURCES.duplicate()
-var storage_caps: Dictionary = {"wood": BASE_STORAGE_CAP, "food": BASE_STORAGE_CAP, "stone": BASE_STORAGE_CAP}
+var storage_caps: Dictionary = _default_storage_caps()
+# Which gatherable resource_type (see resource_node.gd) Gatherer villagers
+# should prefer over "nearest available node of any type" - empty means no
+# preference (today's original behavior). Set via the HUD's resource chips
+# (hud.gd/hud.tscn); read by villager.gd's _find_nearest_gatherable().
+var priority_resource_type: String = ""
 
 signal resources_changed(type: String, new_amount: int)
 signal caps_changed(type: String, new_cap: int)
+signal priority_changed(type: String)
+
+# Click a resource chip to prefer it (Gatherers path to the nearest
+# available node of that type over anything closer of another type);
+# click the same one again to clear back to nearest-of-any-type.
+func set_priority_resource(type: String) -> void:
+	priority_resource_type = "" if priority_resource_type == type else type
+	priority_changed.emit(priority_resource_type)
 
 func add_resource(type: String, amount: int) -> void:
 	resources[type] = mini(get_amount(type) + amount, get_cap(type))
@@ -64,7 +83,15 @@ func add_storage_cap_all(bonus: int) -> void:
 
 func reset() -> void:
 	resources = STARTING_RESOURCES.duplicate()
-	storage_caps = {"wood": BASE_STORAGE_CAP, "food": BASE_STORAGE_CAP, "stone": BASE_STORAGE_CAP}
+	storage_caps = _default_storage_caps()
+	priority_resource_type = ""
+	priority_changed.emit(priority_resource_type)
 	for type in resources:
 		resources_changed.emit(type, resources[type])
 		caps_changed.emit(type, storage_caps[type])
+
+func _default_storage_caps() -> Dictionary:
+	var caps := {}
+	for type in STARTING_RESOURCES:
+		caps[type] = BASE_STORAGE_CAP
+	return caps

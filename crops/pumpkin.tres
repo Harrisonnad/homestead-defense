@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CropDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/crop_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+crop_name = "Pumpkin"
+ammo_type = "cannonballs"
+yield_amount = 4
+days_to_grow = 2
+tint = Color(0.85, 0.5, 0.15, 1)

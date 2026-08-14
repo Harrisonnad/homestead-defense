@@ -44,6 +44,39 @@ layout_mode = 2
 horizontal_alignment = 1
 text = "A low-poly homesteading city defense"
 
+[node name="SeedRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="SeedLabel" type="Label" parent="CenterContainer/VBoxContainer/SeedRow"]
+layout_mode = 2
+text = "Seed:"
+
+[node name="SeedInput" type="LineEdit" parent="CenterContainer/VBoxContainer/SeedRow"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+placeholder_text = "Random"
+
+[node name="DifficultyRow" type="HBoxContainer" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="DifficultyLabel" type="Label" parent="CenterContainer/VBoxContainer/DifficultyRow"]
+layout_mode = 2
+text = "Difficulty:"
+
+[node name="DifficultyOption" type="OptionButton" parent="CenterContainer/VBoxContainer/DifficultyRow"]
+custom_minimum_size = Vector2(140, 0)
+layout_mode = 2
+item_count = 3
+selected = 1
+popup/item_0/text = "Easy"
+popup/item_0/id = 0
+popup/item_1/text = "Normal"
+popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
+
 [node name="NewGameButton" type="Button" parent="CenterContainer/VBoxContainer"]
 custom_minimum_size = Vector2(220, 0)
 layout_mode = 2

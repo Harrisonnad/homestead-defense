@@ -4,7 +4,7 @@ extends Node
 # the day/night phase flips, so any system (visuals, spawner, HUD) can react
 # without depending on the Main scene tree.
 
-@export var day_length_seconds: float = 60.0
+@export var day_length_seconds: float = 300.0
 
 var time_of_day: float = 0.3 # seeded past sunrise so no spurious signal fires on frame 1
 var day_count: int = 1

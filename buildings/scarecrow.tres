@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/building_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/scarecrow.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+building_name = "Scarecrow"
+category = "defense"
+footprint_size = Vector2i(1, 1)
+resource_cost = {"wood": 15}
+build_time_seconds = 3.0
+scene = ExtResource("2")
+max_health = 20
+description = "Non-lethal: frightens off any Locust Swarm within range instead of fighting it - Locusts flee rather than eating your crops. No effect on other enemy types. No ammo needed."

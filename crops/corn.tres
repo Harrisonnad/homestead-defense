@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="CropDef" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/crop_def.gd" id="1"]
+
+[resource]
+script = ExtResource("1")
+crop_name = "Corn"
+ammo_type = "food"
+yield_amount = 14
+days_to_grow = 2
+tint = Color(0.92, 0.78, 0.2, 1)

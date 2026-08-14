@@ -21,6 +21,8 @@ func _ready() -> void:
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo and event.keycode == KEY_T:
 		panel.visible = not panel.visible
+		if panel.visible and button_list.get_child_count() > 0:
+			button_list.get_child(0).grab_focus()
 
 func _build_buttons() -> void:
 	for id in Progression.UPGRADES:

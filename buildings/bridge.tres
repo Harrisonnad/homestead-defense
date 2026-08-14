@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="BuildingDef" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/basebuilder/building_def.gd" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/buildings/bridge.tscn" id="2"]
+
+[resource]
+script = ExtResource("1")
+building_name = "Bridge"
+category = "bridge"
+footprint_size = Vector2i(1, 1)
+resource_cost = {"wood": 20}
+build_time_seconds = 4.0
+scene = ExtResource("2")
+description = "Only placeable on water. Permanently clears a walkable crossing there for Villagers, Dogs, and enemies alike - it can't be attacked or destroyed once built."

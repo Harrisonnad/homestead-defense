@@ -13,4 +13,4 @@ build_time_seconds = 6.0
 scene = ExtResource("2")
 max_health = 80
 defense_stats = {"damage": 8, "range": 7.0, "interval": 1.2}
-description = "Automatically fires on enemies in range. Bonus range on chokepoint tiles."
+description = "Automatically fires on enemies in range. Bonus range on chokepoint tiles. Consumes 1 Dart per shot - keep Carrot plots growing."
