@@ -1,0 +1,69 @@
+name: CI
+
+on:
+  push:
+    branches: [main, Production]
+  pull_request:
+  workflow_dispatch:
+
+env:
+  GODOT_VERSION: "4.7"
+
+jobs:
+  gdscript-check:
+    name: GDScript syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Download Godot (headless-capable Linux build)
+        run: |
+          curl -fL -o godot.zip "https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${GODOT_VERSION}-stable_linux.x86_64.zip"
+          unzip -q godot.zip
+          chmod +x "Godot_v${GODOT_VERSION}-stable_linux.x86_64"
+          sudo mv "Godot_v${GODOT_VERSION}-stable_linux.x86_64" /usr/local/bin/godot
+
+      # Godot's own exit code after a headless import is unreliable (see
+      # godotengine/godot#83449) even on a clean project, so this step
+      # can't just check `$?` - it greps the import log for actual parse/
+      # script errors instead. --quit-after 2 (not --quit) works around a
+      # separate known flakiness where a single-frame quit can cut the
+      # import off before it finishes (godotengine/godot#77508).
+      - name: Import project and scan for script errors
+        run: |
+          godot --headless --path . --import --quit-after 2 2>&1 | tee godot_import.log || true
+          if grep -Ei "SCRIPT ERROR|Parse Error|Compile Error" godot_import.log; then
+            echo "::error::GDScript errors found during project import - see above."
+            exit 1
+          fi
+          echo "No GDScript errors detected."
+
+  export-validation:
+    name: Headless export build validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      # Actually runs every preset in export_presets.cfg (Windows Desktop +
+      # Linux) through Godot's real exporter, not just a syntax pass - this
+      # catches broken export config, missing resources, and bad references
+      # that a plain import wouldn't. Build output is discarded (archive_output:
+      # false); this job is a pass/fail gate, not a release step.
+      - name: Export game (Windows + Linux presets)
+        uses: firebelley/godot-export@v8.0.0
+        with:
+          godot_executable_download_url: https://downloads.tuxfamily.org/godotengine/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}-stable_linux.x86_64.zip
+          godot_export_templates_download_url: https://downloads.tuxfamily.org/godotengine/${{ env.GODOT_VERSION }}/Godot_v${{ env.GODOT_VERSION }}-stable_export_templates.tpz
+          relative_project_path: ./
+          archive_output: false
+
+  secret-scan:
+    name: Secret scanning
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
