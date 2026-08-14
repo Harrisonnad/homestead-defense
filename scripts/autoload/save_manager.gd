@@ -11,9 +11,25 @@ extends Node
 const SAVE_PATH := "user://savegame.json"
 
 var pending_load: bool = false
+var show_tutorial_prompt: bool = false
 
 func has_save() -> bool:
 	return FileAccess.file_exists(SAVE_PATH)
+
+# Reads just the seed out of the save file without applying the rest of it -
+# MapBuilder needs this at its own _ready() time (before the deferred
+# load_game() call that restores everything else runs) so the regenerated
+# map actually matches the one the save was made on. See docs/architecture-
+# decisions.md's "known pre-existing gap" - this is the fix for it.
+func peek_saved_seed() -> int:
+	if not has_save():
+		return 0
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var parsed = JSON.parse_string(file.get_as_text())
+	file.close()
+	if typeof(parsed) != TYPE_DICTIONARY:
+		return 0
+	return int(parsed.get("seed", 0))
 
 func save_game() -> bool:
 	var main := get_tree().current_scene
@@ -86,13 +102,18 @@ func _apply(data: Dictionary) -> void:
 	for type in saved_resources:
 		Economy.resources[type] = int(saved_resources[type])
 		Economy.resources_changed.emit(type, Economy.resources[type])
-	var saved_caps: Dictionary = data.get("storage_caps", {})
-	for type in saved_caps:
-		Economy.storage_caps[type] = int(saved_caps[type])
+	# Storage-cap/population-cap bonuses come from restored buildings'
+	# _ready() -> _apply_age() calls below, same as normal gameplay - reset
+	# to base here instead of restoring the saved (already bonus-inclusive)
+	# totals directly, or every restored House/Storehouse would double-apply
+	# its bonus on top of the saved total.
+	for type in Economy.storage_caps.keys():
+		Economy.storage_caps[type] = Economy.BASE_STORAGE_CAP
 		Economy.caps_changed.emit(type, Economy.storage_caps[type])
 
 	Progression.load_state(data.get("purchased", []))
-	GameState.population_cap = int(data.get("population_cap", 3))
+	AchievementManager.reset()
+	GameState.population_cap = GameState.BASE_POPULATION_CAP
 	GameState.population_cap_changed.emit(GameState.population_cap)
 
 	var main := get_tree().current_scene
@@ -136,11 +157,17 @@ func _apply(data: Dictionary) -> void:
 			b.footprint_origin = Vector2i(int(origin_arr[0]), int(origin_arr[1]))
 			b.footprint_size = Vector2i(int(size_arr[0]), int(size_arr[1]))
 			b.placement_grid = map_builder.placement_grid
+		# Mirrors construction_site.gd's _on_complete() - Bridge needs this to
+		# reopen its water crossing, and can't do it from its own _ready()
+		# since footprint_origin isn't set until the lines above run.
+		if b.has_method("on_footprint_ready"):
+			b.on_footprint_ready()
 		var saved_health: int = int(bdata.get("health", -1))
 		if "current_health" in b and saved_health >= 0:
 			b.current_health = saved_health
 		b.set_meta("building_def_path", def_path)
 		b.add_to_group("player_buildings")
+		AchievementManager.on_building_completed(b)
 		if map_builder.placement_grid:
 			map_builder.placement_grid.claim(b.footprint_origin, b.footprint_size)
 
